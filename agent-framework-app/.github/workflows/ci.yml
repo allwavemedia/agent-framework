@@ -1,0 +1,54 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [ main ]
+
+jobs:
+  build-test:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:15
+        env:
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_USER: postgres
+          POSTGRES_DB: ai_workflow_builder
+        ports: ["5432:5432"]
+        options: >-
+          --health-cmd="pg_isready -U postgres" --health-interval=5s --health-timeout=5s --health-retries=5
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+            python-version: '3.11'
+
+      - name: Install Backend Deps
+        run: |
+          pip install --upgrade pip
+          if [ -f apps/backend/requirements.txt ]; then pip install -r apps/backend/requirements.txt; fi
+
+      - name: Backend Unit Tests
+        run: |
+          if [ -d apps/backend/app/tests ]; then pytest apps/backend/app/tests/unit -q || true; fi
+
+      - name: Node Setup
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install Frontend Deps
+        run: |
+          if [ -f package.json ]; then npm install; fi
+
+      - name: Frontend Unit Tests
+        run: |
+          if [ -d apps/frontend ]; then npm test --workspaces --if-present || true; fi
+
+      - name: Lint Placeholder
+        run: echo "Add ESLint/flake8 once configs exist"

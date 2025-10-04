@@ -1,0 +1,3 @@
+# **Problem Statement**
+
+Developing AI agents and workflows requires significant programming expertise and a deep understanding of specific frameworks like the Microsoft Agent Framework. This creates a high barrier to entry, limiting the ability of domain experts, business analysts, and low-code developers to leverage powerful AI orchestration capabilities. Existing solutions often lack a user-friendly interface that bridges the gap between high-level conceptual design and low-level code implementation, forcing users into either overly simplistic, restrictive tools or complex, code-heavy environments. There is a need for a platform that visually represents AI workflows while providing direct access to the underlying, compliant code.

@@ -1,0 +1,16 @@
+# Root dockerignore
+node_modules
+**/node_modules
+.git
+.gitignore
+.env
+.env.*
+Dockerfile*
+dist
+build
+__pycache__
+.python-version
+.mypy_cache
+pytest.cache
+coverage*
+perf-results
