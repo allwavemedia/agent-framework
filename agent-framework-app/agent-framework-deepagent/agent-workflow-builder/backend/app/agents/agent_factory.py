@@ -1,17 +1,33 @@
 """
 Agent factory for creating AI agent instances using Microsoft Agent Framework.
+
+Supports multiple model providers:
+- Azure OpenAI
+- OpenAI
+- Local models (Ollama, LM Studio, etc.)
 """
 from typing import Dict, Any, List, Union, Optional
 from contextlib import asynccontextmanager
+from enum import Enum
 
 from agent_framework import ChatAgent
 from agent_framework.azure import AzureOpenAIChatClient
+from agent_framework.openai import OpenAIChatClient
+from agent_framework.exceptions import ServiceInitializationError
 from azure.identity import DefaultAzureCredential
 
 from app.models import Agent, AgentType
 from app.core.logging import get_logger
+from app.core.config import settings
 
 logger = get_logger(__name__)
+
+
+class ModelProvider(str, Enum):
+    """Supported model providers."""
+    AZURE_OPENAI = "azure_openai"
+    OPENAI = "openai"
+    LOCAL = "local"
 
 
 class AgentFactory:
@@ -20,12 +36,40 @@ class AgentFactory:
     This factory uses async context management patterns as recommended by the
     Microsoft Agent Framework documentation. Clients should be used with async context
     managers to ensure proper resource cleanup.
+    
+    Supports multiple model providers:
+    - Azure OpenAI (via Azure credentials)
+    - OpenAI (via API key)
+    - Local models (Ollama, LM Studio, etc.)
     """
     
-    def __init__(self):
+    def __init__(self, provider: Optional[ModelProvider] = None):
         self.chat_clients = {}
         self._credential: Optional[DefaultAzureCredential] = None
         self._azure_chat_client: Optional[AzureOpenAIChatClient] = None
+        self._openai_chat_client: Optional[OpenAIChatClient] = None
+        self._local_chat_client: Optional[OpenAIChatClient] = None
+        
+        # Determine provider based on configuration if not explicitly set
+        if provider is None:
+            provider = self._detect_provider()
+        
+        self.provider = provider
+        logger.info(f"AgentFactory initialized with provider: {provider.value}")
+    
+    def _detect_provider(self) -> ModelProvider:
+        """Detect which model provider to use based on configuration."""
+        # Priority: Local > OpenAI > Azure OpenAI
+        if settings.LOCAL_MODEL_ENABLED and settings.LOCAL_MODEL_BASE_URL:
+            return ModelProvider.LOCAL
+        elif settings.OPENAI_API_KEY:
+            return ModelProvider.OPENAI
+        elif settings.AZURE_OPENAI_ENDPOINT or settings.AZURE_OPENAI_API_KEY:
+            return ModelProvider.AZURE_OPENAI
+        else:
+            # Default to Azure OpenAI
+            logger.warning("No model provider configured, defaulting to Azure OpenAI")
+            return ModelProvider.AZURE_OPENAI
     
     async def __aenter__(self):
         """Async context manager entry."""
@@ -38,31 +82,83 @@ class AgentFactory:
         return False
     
     async def _initialize_clients(self) -> None:
-        """Initialize Azure OpenAI chat clients with async context management."""
+        """Initialize chat clients based on the selected provider."""
         try:
-            # Initialize Azure credential
-            self._credential = DefaultAzureCredential()
+            if self.provider == ModelProvider.AZURE_OPENAI:
+                await self._initialize_azure_client()
+            elif self.provider == ModelProvider.OPENAI:
+                await self._initialize_openai_client()
+            elif self.provider == ModelProvider.LOCAL:
+                await self._initialize_local_client()
+            else:
+                raise ValueError(f"Unknown provider: {self.provider}")
             
-            # Create Azure OpenAI Chat Client
-            # Note: AzureOpenAIChatClient can be used directly without async context
-            # but we store it for potential cleanup
-            self._azure_chat_client = AzureOpenAIChatClient(credential=self._credential)
-            
-            logger.info("Azure OpenAI chat client initialized successfully")
+            logger.info(f"{self.provider.value} chat client initialized successfully")
                 
         except Exception as e:
-            logger.error(f"Error initializing Azure OpenAI clients: {e}")
+            logger.error(f"Error initializing chat clients: {e}")
             raise
+    
+    async def _initialize_azure_client(self) -> None:
+        """Initialize Azure OpenAI chat client."""
+        self._credential = DefaultAzureCredential()
+        self._azure_chat_client = AzureOpenAIChatClient(credential=self._credential)
+    
+    async def _initialize_openai_client(self) -> None:
+        """Initialize OpenAI chat client."""
+        if not settings.OPENAI_API_KEY:
+            raise ServiceInitializationError("OPENAI_API_KEY is required for OpenAI provider")
+        
+        # Create OpenAI client
+        from openai import AsyncOpenAI
+        openai_client = AsyncOpenAI(
+            api_key=settings.OPENAI_API_KEY,
+            base_url=settings.OPENAI_BASE_URL
+        )
+        
+        self._openai_chat_client = OpenAIChatClient(
+            client=openai_client,
+            model=settings.OPENAI_MODEL
+        )
+    
+    async def _initialize_local_client(self) -> None:
+        """Initialize local model client (OpenAI-compatible API)."""
+        if not settings.LOCAL_MODEL_BASE_URL:
+            raise ServiceInitializationError("LOCAL_MODEL_BASE_URL is required for local provider")
+        
+        # Create local model client (OpenAI-compatible)
+        from openai import AsyncOpenAI
+        local_client = AsyncOpenAI(
+            api_key="not-needed",  # Local models typically don't require API keys
+            base_url=settings.LOCAL_MODEL_BASE_URL
+        )
+        
+        self._local_chat_client = OpenAIChatClient(
+            client=local_client,
+            model=settings.LOCAL_MODEL_NAME or "llama2"
+        )
     
     async def _cleanup_clients(self) -> None:
         """Clean up clients and resources."""
         try:
             # Clean up any resources if needed
             self._azure_chat_client = None
+            self._openai_chat_client = None
+            self._local_chat_client = None
             self._credential = None
-            logger.info("Azure OpenAI chat clients cleaned up")
+            logger.info(f"{self.provider.value} chat clients cleaned up")
         except Exception as e:
             logger.error(f"Error cleaning up clients: {e}")
+    
+    def _get_active_client(self):
+        """Get the active chat client based on provider."""
+        if self.provider == ModelProvider.AZURE_OPENAI:
+            return self._azure_chat_client
+        elif self.provider == ModelProvider.OPENAI:
+            return self._openai_chat_client
+        elif self.provider == ModelProvider.LOCAL:
+            return self._local_chat_client
+        return None
     
     async def create_agent(self, agent_config: Agent) -> ChatAgent:
         """Create an AI agent instance from configuration.
@@ -77,16 +173,17 @@ class AgentFactory:
             Exception: If agent creation fails
         """
         try:
-            if self._azure_chat_client is None:
+            chat_client = self._get_active_client()
+            if chat_client is None:
                 raise RuntimeError("AgentFactory not initialized. Use 'async with AgentFactory()' pattern.")
             
             # Create agent using Microsoft Agent Framework pattern
-            agent = self._azure_chat_client.create_agent(
+            agent = chat_client.create_agent(
                 instructions=agent_config.instructions,
                 name=agent_config.name
             )
             
-            logger.info(f"Created agent: {agent_config.name} with type: {agent_config.agent_type}")
+            logger.info(f"Created agent: {agent_config.name} with type: {agent_config.agent_type} using {self.provider.value}")
             return agent
                 
         except Exception as e:
@@ -117,16 +214,17 @@ class AgentFactory:
         5. Be precise and thorough in your responses
         """
         
-        if self._azure_chat_client is None:
+        chat_client = self._get_active_client()
+        if chat_client is None:
             raise RuntimeError("AgentFactory not initialized. Use 'async with AgentFactory()' pattern.")
         
         # Create agent with enhanced instructions
-        agent = self._azure_chat_client.create_agent(
+        agent = chat_client.create_agent(
             instructions=specialist_instructions,
             name=agent_config.name
         )
         
-        logger.info(f"Created specialist agent: {agent_config.name}")
+        logger.info(f"Created specialist agent: {agent_config.name} using {self.provider.value}")
         return agent
     
     async def create_workflow_agent(self, name: str, instructions: str) -> ChatAgent:
@@ -139,15 +237,16 @@ class AgentFactory:
         Returns:
             ChatAgent for workflow execution
         """
-        if self._azure_chat_client is None:
+        chat_client = self._get_active_client()
+        if chat_client is None:
             raise RuntimeError("AgentFactory not initialized. Use 'async with AgentFactory()' pattern.")
         
-        agent = self._azure_chat_client.create_agent(
+        agent = chat_client.create_agent(
             instructions=instructions,
             name=name
         )
         
-        logger.info(f"Created workflow agent: {name}")
+        logger.info(f"Created workflow agent: {name} using {self.provider.value}")
         return agent
     
     async def run_agent(self, agent: ChatAgent, message: str) -> str:
@@ -202,7 +301,10 @@ class AgentFactory:
             Dict with client availability information
         """
         return {
+            'current_provider': self.provider.value,
             'azure_openai_available': self._azure_chat_client is not None,
+            'openai_available': self._openai_chat_client is not None,
+            'local_model_available': self._local_chat_client is not None,
             'agent_framework_available': True,
         }
     
@@ -227,3 +329,21 @@ class AgentFactory:
             AzureOpenAIChatClient instance or None
         """
         return self._azure_chat_client
+    
+    @property
+    def openai_chat_client(self) -> Optional[OpenAIChatClient]:
+        """Get the OpenAI chat client.
+        
+        Returns:
+            OpenAIChatClient instance or None
+        """
+        return self._openai_chat_client
+    
+    @property
+    def local_chat_client(self) -> Optional[OpenAIChatClient]:
+        """Get the local model chat client.
+        
+        Returns:
+            OpenAIChatClient instance or None
+        """
+        return self._local_chat_client

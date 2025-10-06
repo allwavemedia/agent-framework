@@ -30,6 +30,13 @@ class Settings(BaseSettings):
     
     # OpenAI Configuration
     OPENAI_API_KEY: Optional[str] = Field(default=None, description="OpenAI API key")
+    OPENAI_MODEL: str = Field(default="gpt-4", description="OpenAI model name")
+    OPENAI_BASE_URL: Optional[str] = Field(default=None, description="Custom OpenAI base URL (for local models)")
+    
+    # Local Model Configuration (e.g., Ollama, LM Studio, etc.)
+    LOCAL_MODEL_ENABLED: bool = Field(default=False, description="Enable local model support")
+    LOCAL_MODEL_BASE_URL: Optional[str] = Field(default="http://localhost:11434/v1", description="Local model API base URL")
+    LOCAL_MODEL_NAME: Optional[str] = Field(default="llama2", description="Local model name")
     
     # MCP Configuration
     MICROSOFT_LEARN_MCP_URL: str = Field(
