@@ -17,7 +17,6 @@ class AgentService:
     
     def __init__(self, db: Session):
         self.db = db
-        self.agent_factory = AgentFactory()
     
     async def list_agents(self, skip: int = 0, limit: int = 100) -> List[AgentResponse]:
         """List all agents."""
@@ -90,19 +89,21 @@ class AgentService:
             raise ValueError("Agent not found")
         
         try:
-            # Create agent instance
-            agent_instance = await self.agent_factory.create_agent(agent)
-            
-            # Run test
-            result = await agent_instance.run(test_input.get("message", "Hello"))
-            
-            return {
-                "success": True,
-                "result": result.text if hasattr(result, 'text') else str(result),
-                "agent_id": agent_id,
-                "test_input": test_input,
-                "timestamp": datetime.utcnow().isoformat(),
-            }
+            # Use async context manager for agent factory
+            async with AgentFactory() as factory:
+                # Create agent instance
+                agent_instance = await factory.create_agent(agent)
+                
+                # Run test
+                result = await agent_instance.run(test_input.get("message", "Hello"))
+                
+                return {
+                    "success": True,
+                    "result": result.text if hasattr(result, 'text') else str(result),
+                    "agent_id": agent_id,
+                    "test_input": test_input,
+                    "timestamp": datetime.utcnow().isoformat(),
+                }
             
         except Exception as e:
             logger.error(f"Error testing agent {agent_id}: {e}")
