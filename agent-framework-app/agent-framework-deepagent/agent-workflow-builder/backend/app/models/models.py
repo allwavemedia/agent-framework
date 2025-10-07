@@ -366,4 +366,50 @@ class WorkflowExecutionEvent(BaseModel):
     event_type: str
     node_id: Optional[int] = None
     data: Dict[str, Any]
+
+
+# Context Provider & Memory Models
+class ConversationMemory(SQLModel, table=True):
+    """Conversation memory storage for context providers."""
+    __tablename__ = "conversation_memories"
+    
+    id: Optional[int] = Field(default=None, primary_key=True)
+    thread_id: str = Field(index=True, description="Thread identifier")
+    agent_id: Optional[int] = Field(default=None, index=True, description="Associated agent")
+    user_id: Optional[str] = Field(default=None, index=True, description="User identifier")
+    memory_key: str = Field(index=True, description="Memory key/category")
+    memory_value: Dict[str, Any] = Field(sa_column=Column(JSON), description="Memory content")
+    created_at: datetime = Field(default_factory=datetime.utcnow)
+    updated_at: Optional[datetime] = None
+
+
+class ContextProviderConfig(SQLModel, table=True):
+    """Configuration for context providers."""
+    __tablename__ = "context_provider_configs"
+    
+    id: Optional[int] = Field(default=None, primary_key=True)
+    name: str = Field(index=True, description="Provider name")
+    provider_type: str = Field(description="Type of context provider (simple, mem0, redis, custom)")
+    config: Dict[str, Any] = Field(sa_column=Column(JSON), description="Provider configuration")
+    is_active: bool = Field(default=True)
+    created_at: datetime = Field(default_factory=datetime.utcnow)
+    updated_at: Optional[datetime] = None
+
+
+class ContextProviderConfigCreate(BaseModel):
+    """Model for creating context provider config."""
+    name: str
+    provider_type: str
+    config: Dict[str, Any]
+
+
+class ContextProviderConfigResponse(BaseModel):
+    """Response model for context provider config."""
+    id: int
+    name: str
+    provider_type: str
+    config: Dict[str, Any]
+    is_active: bool
+    created_at: datetime
+    updated_at: Optional[datetime]
     timestamp: datetime = Field(default_factory=datetime.utcnow)
