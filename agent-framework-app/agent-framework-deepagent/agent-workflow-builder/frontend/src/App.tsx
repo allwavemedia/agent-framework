@@ -17,6 +17,8 @@ import {
 import { NodePalette } from './components/NodePalette'
 import { CheckpointManager } from './components/CheckpointManager'
 import { ApprovalPanel } from './components/ApprovalPanel'
+import { OrchestrationPanel } from './components/OrchestrationPanel'
+import { PlanReviewPanel } from './components/PlanReviewPanel'
 import { useAgents, useWorkflow, useWebSocket } from './hooks'
 import { apiClient } from './api/client'
 
@@ -370,6 +372,30 @@ function WorkflowBuilder() {
                   workflowId={String(workflowId)}
                   onApprovalProcessed={() => {
                     console.log('Approval processed, refreshing workflow state');
+                  }}
+                />
+              </div>
+            )}
+
+            {/* Orchestration Handoffs */}
+            {workflowId && (
+              <div className="mt-4">
+                <OrchestrationPanel 
+                  workflowId={String(workflowId)}
+                  onRefresh={() => {
+                    console.log('Orchestration handoffs refreshed');
+                  }}
+                />
+              </div>
+            )}
+
+            {/* Plan Reviews */}
+            {workflowId && (
+              <div className="mt-4">
+                <PlanReviewPanel 
+                  workflowId={String(workflowId)}
+                  onReviewProcessed={() => {
+                    console.log('Plan review processed, refreshing workflow state');
                   }}
                 />
               </div>
