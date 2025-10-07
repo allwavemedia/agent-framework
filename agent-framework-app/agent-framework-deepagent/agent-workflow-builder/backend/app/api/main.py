@@ -3,7 +3,10 @@ Main API router.
 """
 from fastapi import APIRouter
 
-from app.api.routes import agents, workflows, executions, websocket, mcp, checkpoints, approvals, orchestration
+from app.api.routes import (
+    agents, workflows, executions, websocket, mcp, 
+    checkpoints, approvals, orchestration, context, observability
+)
 
 api_router = APIRouter()
 
@@ -16,3 +19,5 @@ api_router.include_router(mcp.router, prefix="/mcp", tags=["mcp"])
 api_router.include_router(checkpoints.router, prefix="/checkpoints", tags=["checkpoints"])
 api_router.include_router(approvals.router, prefix="/approvals", tags=["approvals"])
 api_router.include_router(orchestration.router, tags=["orchestration"])
+api_router.include_router(context.router, tags=["context"])
+api_router.include_router(observability.router, tags=["observability"])
