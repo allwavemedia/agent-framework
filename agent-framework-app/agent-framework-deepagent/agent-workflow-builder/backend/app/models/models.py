@@ -317,6 +317,41 @@ class HumanApprovalRequest(SQLModel, table=True):
     updated_at: Optional[datetime] = Field(default=None)
 
 
+# Orchestration models for Handoff and Magentic patterns
+class HandoffState(SQLModel, table=True):
+    """Handoff state tracking for agent-to-agent control transfer."""
+    __tablename__ = "handoff_states"
+    
+    id: Optional[int] = Field(default=None, primary_key=True)
+    workflow_id: str = Field(index=True, description="Associated workflow ID")
+    execution_id: Optional[int] = Field(default=None, description="Optional execution ID reference")
+    current_agent_id: str = Field(description="Currently active agent")
+    previous_agent_id: Optional[str] = Field(default=None, description="Previous agent in handoff chain")
+    handoff_reason: Optional[str] = Field(default=None, description="Reason for handoff")
+    context_data: Dict[str, Any] = Field(default_factory=dict, sa_column=Column(JSON), description="Handoff context data")
+    created_at: datetime = Field(default_factory=datetime.utcnow)
+    updated_at: Optional[datetime] = Field(default=None)
+
+
+class PlanReviewRequest(SQLModel, table=True):
+    """Plan review requests for Magentic One workflows."""
+    __tablename__ = "plan_review_requests"
+    
+    id: Optional[int] = Field(default=None, primary_key=True)
+    workflow_id: str = Field(index=True, description="Associated workflow ID")
+    execution_id: Optional[int] = Field(default=None, description="Optional execution ID reference")
+    task_text: str = Field(description="Original task description")
+    facts_text: str = Field(default="", description="Gathered facts")
+    plan_text: str = Field(description="Generated plan requiring review")
+    round_index: int = Field(default=0, description="Review round number")
+    status: str = Field(default="pending", description="Review status: pending, approved, revised")
+    decision: Optional[str] = Field(default=None, description="approve or revise")
+    edited_plan_text: Optional[str] = Field(default=None, description="Human-edited plan")
+    comments: Optional[str] = Field(default=None, description="Human feedback")
+    created_at: datetime = Field(default_factory=datetime.utcnow)
+    reviewed_at: Optional[datetime] = Field(default=None)
+
+
 # WebSocket message models
 class WebSocketMessage(BaseModel):
     """WebSocket message model."""
