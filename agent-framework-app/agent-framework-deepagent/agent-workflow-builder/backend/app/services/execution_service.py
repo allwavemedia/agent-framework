@@ -44,7 +44,7 @@ class ExecutionService:
         result = self.db.exec(statement)
         executions = result.all()
         
-        return [WorkflowExecutionResponse.from_orm(execution) for execution in executions]
+        return [WorkflowExecutionResponse.model_validate(execution) for execution in executions]
     
     async def create_execution(self, execution_data: WorkflowExecutionCreate) -> WorkflowExecutionResponse:
         """Create a new workflow execution."""
@@ -58,7 +58,7 @@ class ExecutionService:
         
         logger.info(f"Created workflow execution: {execution.id}")
         
-        return WorkflowExecutionResponse.from_orm(execution)
+        return WorkflowExecutionResponse.model_validate(execution)
     
     async def get_execution(self, execution_id: int) -> Optional[WorkflowExecutionResponse]:
         """Get an execution by ID."""
@@ -66,7 +66,7 @@ class ExecutionService:
         if not execution:
             return None
         
-        return WorkflowExecutionResponse.from_orm(execution)
+        return WorkflowExecutionResponse.model_validate(execution)
     
     async def update_execution(self, execution_id: int, execution_data: WorkflowExecutionUpdate) -> Optional[WorkflowExecutionResponse]:
         """Update an execution."""
@@ -87,7 +87,7 @@ class ExecutionService:
         
         logger.info(f"Updated workflow execution: {execution.id}")
         
-        return WorkflowExecutionResponse.from_orm(execution)
+        return WorkflowExecutionResponse.model_validate(execution)
     
     async def delete_execution(self, execution_id: int) -> bool:
         """Delete an execution."""

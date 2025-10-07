@@ -4,7 +4,14 @@ from fastapi.testclient import TestClient
 
 
 class TestWorkflowExecutionIntegration:
-    """Test suite for workflow execution integration."""
+    """Test suite f        agent_data = {
+            "name": "Test Agent",
+            "description": "Testing CRUD operations",
+            "agent_type": "CHAT_AGENT",
+            "instructions": "You are a test assistant.",
+            "model_settings": {"model": "gpt-4"},
+            "tools": []
+        }low execution integration."""
     
     @pytest.mark.asyncio
     async def test_create_and_execute_simple_workflow(self, client: TestClient):
@@ -15,7 +22,7 @@ class TestWorkflowExecutionIntegration:
             "description": "Agent for integration test",
             "agent_type": "CHAT_AGENT",
             "instructions": "You are a helpful assistant that responds with 'Hello, World!'",
-            "model_config": {"model": "gpt-4", "temperature": 0.7},
+            "model_settings": {"model": "gpt-4", "temperature": 0.7},
             "tools": []
         }
         
@@ -168,7 +175,7 @@ class TestWorkflowExecutionIntegration:
             "description": "Testing CRUD operations",
             "agent_type": "CHAT_AGENT",
             "instructions": "You are a test assistant.",
-            "model_config": {"model": "gpt-4"},
+            "model_settings": {"model": "gpt-4"},
             "tools": []
         }
         
@@ -210,7 +217,7 @@ class TestWorkflowExecutionIntegration:
             "description": "First agent",
             "agent_type": "CHAT_AGENT",
             "instructions": "You are agent 1.",
-            "model_config": {"model": "gpt-4"},
+            "model_settings": {"model": "gpt-4"},
             "tools": []
         }
         
@@ -219,7 +226,7 @@ class TestWorkflowExecutionIntegration:
             "description": "Second agent",
             "agent_type": "SPECIALIST_AGENT",
             "instructions": "You are agent 2.",
-            "model_config": {"model": "gpt-4"},
+            "model_settings": {"model": "gpt-4"},
             "tools": []
         }
         

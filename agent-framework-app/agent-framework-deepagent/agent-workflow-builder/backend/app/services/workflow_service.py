@@ -49,7 +49,7 @@ class WorkflowService:
         # Load related data
         workflow_responses = []
         for workflow in workflows:
-            workflow_response = WorkflowResponse.from_orm(workflow)
+            workflow_response = WorkflowResponse.model_validate(workflow)
             workflow_response.nodes = await self.list_workflow_nodes(workflow.id)
             workflow_response.edges = await self.list_workflow_edges(workflow.id)
             workflow_responses.append(workflow_response)
@@ -67,7 +67,7 @@ class WorkflowService:
         
         logger.info(f"Created workflow: {workflow.name} (ID: {workflow.id})")
         
-        workflow_response = WorkflowResponse.from_orm(workflow)
+        workflow_response = WorkflowResponse.model_validate(workflow)
         workflow_response.nodes = []
         workflow_response.edges = []
         
@@ -79,7 +79,7 @@ class WorkflowService:
         if not workflow:
             return None
         
-        workflow_response = WorkflowResponse.from_orm(workflow)
+        workflow_response = WorkflowResponse.model_validate(workflow)
         workflow_response.nodes = await self.list_workflow_nodes(workflow_id)
         workflow_response.edges = await self.list_workflow_edges(workflow_id)
         
@@ -104,7 +104,7 @@ class WorkflowService:
         
         logger.info(f"Updated workflow: {workflow.name} (ID: {workflow.id})")
         
-        workflow_response = WorkflowResponse.from_orm(workflow)
+        workflow_response = WorkflowResponse.model_validate(workflow)
         workflow_response.nodes = await self.list_workflow_nodes(workflow_id)
         workflow_response.edges = await self.list_workflow_edges(workflow_id)
         
@@ -197,7 +197,7 @@ class WorkflowService:
         result = self.db.exec(statement)
         nodes = result.all()
         
-        return [WorkflowNodeResponse.from_orm(node) for node in nodes]
+        return [WorkflowNodeResponse.model_validate(node) for node in nodes]
     
     async def create_workflow_node(self, node_data: WorkflowNodeCreate) -> WorkflowNodeResponse:
         """Create a new workflow node."""
@@ -210,7 +210,7 @@ class WorkflowService:
         
         logger.info(f"Created workflow node: {node.name} (ID: {node.id})")
         
-        return WorkflowNodeResponse.from_orm(node)
+        return WorkflowNodeResponse.model_validate(node)
     
     async def update_workflow_node(self, node_id: int, node_data: WorkflowNodeUpdate) -> Optional[WorkflowNodeResponse]:
         """Update a workflow node."""
@@ -231,7 +231,7 @@ class WorkflowService:
         
         logger.info(f"Updated workflow node: {node.name} (ID: {node.id})")
         
-        return WorkflowNodeResponse.from_orm(node)
+        return WorkflowNodeResponse.model_validate(node)
     
     async def delete_workflow_node(self, node_id: int) -> bool:
         """Delete a workflow node."""
@@ -265,7 +265,7 @@ class WorkflowService:
         result = self.db.exec(statement)
         edges = result.all()
         
-        return [WorkflowEdgeResponse.from_orm(edge) for edge in edges]
+        return [WorkflowEdgeResponse.model_validate(edge) for edge in edges]
     
     async def create_workflow_edge(self, edge_data: WorkflowEdgeCreate) -> WorkflowEdgeResponse:
         """Create a new workflow edge."""
@@ -278,7 +278,7 @@ class WorkflowService:
         
         logger.info(f"Created workflow edge: {edge.id}")
         
-        return WorkflowEdgeResponse.from_orm(edge)
+        return WorkflowEdgeResponse.model_validate(edge)
     
     async def update_workflow_edge(self, edge_id: int, edge_data: WorkflowEdgeUpdate) -> Optional[WorkflowEdgeResponse]:
         """Update a workflow edge."""
@@ -299,7 +299,7 @@ class WorkflowService:
         
         logger.info(f"Updated workflow edge: {edge.id}")
         
-        return WorkflowEdgeResponse.from_orm(edge)
+        return WorkflowEdgeResponse.model_validate(edge)
     
     async def delete_workflow_edge(self, edge_id: int) -> bool:
         """Delete a workflow edge."""

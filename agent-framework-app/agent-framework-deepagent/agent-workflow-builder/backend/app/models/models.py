@@ -6,7 +6,7 @@ from typing import Optional, List, Dict, Any
 from enum import Enum
 
 from sqlmodel import SQLModel, Field, Relationship, Column, JSON
-from pydantic import BaseModel
+from pydantic import BaseModel, ConfigDict
 
 
 class WorkflowStatus(str, Enum):
@@ -50,7 +50,7 @@ class AgentBase(SQLModel):
     description: Optional[str] = Field(default=None, description="Agent description")
     agent_type: AgentType = Field(description="Type of agent")
     instructions: str = Field(description="Agent instructions/system prompt")
-    model_config: Dict[str, Any] = Field(default_factory=dict, sa_column=Column(JSON))
+    model_settings: Dict[str, Any] = Field(default_factory=dict, sa_column=Column(JSON), description="Model configuration settings")
     tools: List[str] = Field(default_factory=list, sa_column=Column(JSON))
     is_active: bool = Field(default=True, description="Whether the agent is active")
 
@@ -73,7 +73,7 @@ class AgentUpdate(SQLModel):
     name: Optional[str] = None
     description: Optional[str] = None
     instructions: Optional[str] = None
-    model_config: Optional[Dict[str, Any]] = None
+    model_settings: Optional[Dict[str, Any]] = None
     tools: Optional[List[str]] = None
     is_active: Optional[bool] = None
 

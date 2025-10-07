@@ -1,0 +1,332 @@
+[
+  {
+    "test_id": 1,
+    "test_name": "Basic Test",
+    "query": "Hello! Can you introduce yourself and explain what you can help me with?",
+    "response": "",
+    "duration": 4.651028633117676,
+    "timestamp": "2025-10-06T22:53:13.808417",
+    "status": "success",
+    "full_result": {
+      "id": "resp_f368c7027fd6",
+      "created_at": 1759805593.793909,
+      "error": null,
+      "incomplete_details": null,
+      "instructions": null,
+      "metadata": null,
+      "model": "agent-framework",
+      "object": "response",
+      "output": [
+        {
+          "id": "msg_75d2157d",
+          "content": [
+            {
+              "annotations": [],
+              "text": "Hello! I'm your test agent for the Agent Workflow Builder. I can assist you in creating, modifying, or troubleshooting workflows for your automation needs. Whether you're looking for guidance on best practices, need help with specific features, or want to test your workflows, I'm here to help. Just let me know what you need assistance with!",
+              "type": "output_text",
+              "logprobs": null
+            }
+          ],
+          "role": "assistant",
+          "status": "completed",
+          "type": "message"
+        }
+      ],
+      "parallel_tool_calls": false,
+      "temperature": null,
+      "tool_choice": "none",
+      "tools": [],
+      "top_p": null,
+      "background": null,
+      "conversation": null,
+      "max_output_tokens": null,
+      "max_tool_calls": null,
+      "previous_response_id": null,
+      "prompt": null,
+      "prompt_cache_key": null,
+      "reasoning": null,
+      "safety_identifier": null,
+      "service_tier": null,
+      "status": null,
+      "text": null,
+      "top_logprobs": null,
+      "truncation": null,
+      "usage": {
+        "input_tokens": 18,
+        "input_tokens_details": {
+          "cached_tokens": 0
+        },
+        "output_tokens": 85,
+        "output_tokens_details": {
+          "reasoning_tokens": 0
+        },
+        "total_tokens": 103
+      },
+      "user": null
+    }
+  },
+  {
+    "test_id": 2,
+    "test_name": "Context Memory Test",
+    "query": "My name is Alex. Please remember this. What's my name?",
+    "response": "",
+    "duration": 2.4892308712005615,
+    "timestamp": "2025-10-06T22:53:17.299478",
+    "status": "success",
+    "full_result": {
+      "id": "resp_6bcc491dcb43",
+      "created_at": 1759805597.29747,
+      "error": null,
+      "incomplete_details": null,
+      "instructions": null,
+      "metadata": null,
+      "model": "agent-framework",
+      "object": "response",
+      "output": [
+        {
+          "id": "msg_5ee3148e",
+          "content": [
+            {
+              "annotations": [],
+              "text": "Your name is Alex.",
+              "type": "output_text",
+              "logprobs": null
+            }
+          ],
+          "role": "assistant",
+          "status": "completed",
+          "type": "message"
+        }
+      ],
+      "parallel_tool_calls": false,
+      "temperature": null,
+      "tool_choice": "none",
+      "tools": [],
+      "top_p": null,
+      "background": null,
+      "conversation": null,
+      "max_output_tokens": null,
+      "max_tool_calls": null,
+      "previous_response_id": null,
+      "prompt": null,
+      "prompt_cache_key": null,
+      "reasoning": null,
+      "safety_identifier": null,
+      "service_tier": null,
+      "status": null,
+      "text": null,
+      "top_logprobs": null,
+      "truncation": null,
+      "usage": {
+        "input_tokens": 13,
+        "input_tokens_details": {
+          "cached_tokens": 0
+        },
+        "output_tokens": 4,
+        "output_tokens_details": {
+          "reasoning_tokens": 0
+        },
+        "total_tokens": 17
+      },
+      "user": null
+    }
+  },
+  {
+    "test_id": 3,
+    "test_name": "Workflow Design Test",
+    "query": "I need to design a workflow with 3 agents: a research agent, an analysis agent, and a reporting agent. How should they work together?",
+    "response": "",
+    "duration": 14.566481828689575,
+    "timestamp": "2025-10-06T22:53:32.866520",
+    "status": "success",
+    "full_result": {
+      "id": "resp_5c184af0ff30",
+      "created_at": 1759805612.8659,
+      "error": null,
+      "incomplete_details": null,
+      "instructions": null,
+      "metadata": null,
+      "model": "agent-framework",
+      "object": "response",
+      "output": [
+        {
+          "id": "msg_7bf7bfb3",
+          "content": [
+            {
+              "annotations": [],
+              "text": "Designing a workflow with a research agent, an analysis agent, and a reporting agent involves defining clear roles and handoffs between the agents to ensure efficiency and coherence. Here’s a suggested workflow for these three agents:\n\n### Workflow Overview\n\n1. **Research Agent:**\n   - **Task:** Gather pertinent information and data related to the project or subject matter.\n   - **Processes:**\n     - Identify reliable sources (academic papers, market reports, surveys).\n     - Collect data and summarize key findings.\n     - Organize the data in a format suitable for analysis.\n   - **Deliverable:** A comprehensive research report or dataset that outlines findings and sources.\n\n2. **Analysis Agent:**\n   - **Task:** Analyze the data provided by the research agent.\n   - **Processes:**\n     - Review the research report/dataset.\n     - Perform qualitative and quantitative analyses (statistical analysis, trend identification, etc.).\n     - Draw conclusions and insights based on the analysis.\n   - **Deliverable:** An analytical report with insights, graphs, charts, or any relevant statistical findings.\n\n3. **Reporting Agent:**\n   - **Task:** Create a final report based on the insights generated from the analysis.\n   - **Processes:**\n     - Review the analytical report and the original research findings.\n     - Compile a coherent report summarizing the research, analysis, conclusions, and recommendations.\n     - Format the report for presentation (adding visuals, executive summary, etc.).\n   - **Deliverable:** A polished, final report ready for distribution to stakeholders.\n\n### Workflow Steps\n\n1. **Research Phase:**\n   - The research agent begins by defining the research objectives and collecting data.\n   - They conduct research and compile findings into a research report.\n\n2. **Analysis Phase:**\n   - The analysis agent receives the research report from the research agent.\n   - They analyze the data, deriving insights and conclusions.\n   - The analysis agent prepares an analytical report outlining their findings.\n\n3. **Reporting Phase:**\n   - The reporting agent receives both the research report and analytical report.\n   - They synthesize information, aligning the findings from both reports.\n   - The reporting agent creates the final presentation report and ensures it meets the specified requirements.\n\n### Communication and Feedback Loops\n\n- **Regular Check-ins:** Schedule periodic meetings or updates among the agents to ensure alignment and address any challenges.\n- **Feedback Mechanism:** After each phase, agents should provide feedback to each other, enhancing collaboration and improving future workflows.\n- **Knowledge Sharing:** Use a shared platform or document repository for all agents to access research, analysis, and reporting materials easily.\n\n### Conclusion\n\nThis structured workflow allows each agent to focus on their strengths while ensuring a smooth transition of information from one phase to the next. Collaboration and communication are key to the success of this workflow, so emphasizing these elements will help achieve a cohesive and effective output.",
+              "type": "output_text",
+              "logprobs": null
+            }
+          ],
+          "role": "assistant",
+          "status": "completed",
+          "type": "message"
+        }
+      ],
+      "parallel_tool_calls": false,
+      "temperature": null,
+      "tool_choice": "none",
+      "tools": [],
+      "top_p": null,
+      "background": null,
+      "conversation": null,
+      "max_output_tokens": null,
+      "max_tool_calls": null,
+      "previous_response_id": null,
+      "prompt": null,
+      "prompt_cache_key": null,
+      "reasoning": null,
+      "safety_identifier": null,
+      "service_tier": null,
+      "status": null,
+      "text": null,
+      "top_logprobs": null,
+      "truncation": null,
+      "usage": {
+        "input_tokens": 33,
+        "input_tokens_details": {
+          "cached_tokens": 0
+        },
+        "output_tokens": 778,
+        "output_tokens_details": {
+          "reasoning_tokens": 0
+        },
+        "total_tokens": 811
+      },
+      "user": null
+    }
+  },
+  {
+    "test_id": 4,
+    "test_name": "Technical Question",
+    "query": "What's the difference between sequential and concurrent workflow patterns? When should I use each?",
+    "response": "",
+    "duration": 9.31803011894226,
+    "timestamp": "2025-10-06T22:53:43.185694",
+    "status": "success",
+    "full_result": {
+      "id": "resp_0f01b7f38d70",
+      "created_at": 1759805623.184735,
+      "error": null,
+      "incomplete_details": null,
+      "instructions": null,
+      "metadata": null,
+      "model": "agent-framework",
+      "object": "response",
+      "output": [
+        {
+          "id": "msg_30d683da",
+          "content": [
+            {
+              "annotations": [],
+              "text": "Sequential and concurrent workflow patterns refer to different ways of organizing tasks in a workflow.\n\n### Sequential Workflow Pattern\n\n**Definition:** In a sequential workflow, tasks are executed one after another in a specific order. Each task must be completed before the next one can begin.\n\n**Characteristics:**\n- Linear progression: Tasks follow a straight path.\n- Dependency: Each task depends on the completion of the previous task.\n- Simplicity: Easier to track and manage, especially in smaller workflows.\n\n**When to Use:**\n- When tasks have a strict order and are dependent on each other.\n- In processes that require finalization of one step before moving to the next (e.g., document approval processes, product development stages).\n- When the complexity of concurrent tasks would outweigh the benefits.\n\n### Concurrent Workflow Pattern\n\n**Definition:** In a concurrent workflow, multiple tasks can be executed simultaneously or in overlapping timeframes. Tasks can start before others are completed.\n\n**Characteristics:**\n- Parallel execution: Tasks can run at the same time, increasing efficiency.\n- Independence: Tasks can often be completed without relying on others.\n- Complexity: It's more complex to manage due to potential overlaps and dependencies.\n\n**When to Use:**\n- When tasks can operate independently and do not rely on one another.\n- In scenarios where tasks are time-consuming, and completing them in parallel can significantly reduce overall process time (e.g., software testing, marketing campaigns).\n- When higher productivity is desired, and resources allow for concurrent execution.\n\n### Summary:\nUse sequential workflows for tasks that must follow a defined order and have dependencies. Opt for concurrent workflows when tasks can be performed simultaneously to increase efficiency and reduce overall time.",
+              "type": "output_text",
+              "logprobs": null
+            }
+          ],
+          "role": "assistant",
+          "status": "completed",
+          "type": "message"
+        }
+      ],
+      "parallel_tool_calls": false,
+      "temperature": null,
+      "tool_choice": "none",
+      "tools": [],
+      "top_p": null,
+      "background": null,
+      "conversation": null,
+      "max_output_tokens": null,
+      "max_tool_calls": null,
+      "previous_response_id": null,
+      "prompt": null,
+      "prompt_cache_key": null,
+      "reasoning": null,
+      "safety_identifier": null,
+      "service_tier": null,
+      "status": null,
+      "text": null,
+      "top_logprobs": null,
+      "truncation": null,
+      "usage": {
+        "input_tokens": 24,
+        "input_tokens_details": {
+          "cached_tokens": 0
+        },
+        "output_tokens": 460,
+        "output_tokens_details": {
+          "reasoning_tokens": 0
+        },
+        "total_tokens": 484
+      },
+      "user": null
+    }
+  },
+  {
+    "test_id": 5,
+    "test_name": "Best Practices",
+    "query": "What are the top 5 best practices for building production-ready agent workflows?",
+    "response": "",
+    "duration": 7.83837366104126,
+    "timestamp": "2025-10-06T22:53:52.025044",
+    "status": "success",
+    "full_result": {
+      "id": "resp_d473422a220f",
+      "created_at": 1759805632.023835,
+      "error": null,
+      "incomplete_details": null,
+      "instructions": null,
+      "metadata": null,
+      "model": "agent-framework",
+      "object": "response",
+      "output": [
+        {
+          "id": "msg_20725981",
+          "content": [
+            {
+              "annotations": [],
+              "text": "Building production-ready agent workflows requires careful consideration and adherence to best practices. Here are the top 5:\n\n1. **Robust Error Handling**:\n   - Implement comprehensive error handling mechanisms to gracefully manage exceptions and unexpected behavior. Use retries for transient errors, and ensure that the system logs all failures for later analysis and debugging.\n\n2. **Clear and Modular Design**:\n   - Structure workflows into clear, modular components. This will facilitate easier testing, maintenance, and updates. Use well-defined responsibilities for each module to ensure that workflows are easy to understand and adapt.\n\n3. **Scalability and Performance**:\n   - Optimize workflows for scalability to handle increased load without performance degradation. Use efficient algorithms, limit resource consumption, and design for distributed processing where applicable.\n\n4. **Thorough Testing and Validation**:\n   - Conduct comprehensive testing, including unit tests, integration tests, and end-to-end scenarios, to ensure that workflows perform correctly under various conditions. Validate the workflow with realistic data and edge cases.\n\n5. **Monitoring and Logging**:\n   - Implement monitoring and logging to track workflow execution and performance in production. Use alerts for critical failures and establish dashboards to visualize key metrics and health indicators for quick insights into workflow status.\n\nBy following these best practices, you can design agent workflows that are reliable, maintainable, and adaptable to changing requirements.",
+              "type": "output_text",
+              "logprobs": null
+            }
+          ],
+          "role": "assistant",
+          "status": "completed",
+          "type": "message"
+        }
+      ],
+      "parallel_tool_calls": false,
+      "temperature": null,
+      "tool_choice": "none",
+      "tools": [],
+      "top_p": null,
+      "background": null,
+      "conversation": null,
+      "max_output_tokens": null,
+      "max_tool_calls": null,
+      "previous_response_id": null,
+      "prompt": null,
+      "prompt_cache_key": null,
+      "reasoning": null,
+      "safety_identifier": null,
+      "service_tier": null,
+      "status": null,
+      "text": null,
+      "top_logprobs": null,
+      "truncation": null,
+      "usage": {
+        "input_tokens": 20,
+        "input_tokens_details": {
+          "cached_tokens": 0
+        },
+        "output_tokens": 393,
+        "output_tokens_details": {
+          "reasoning_tokens": 0
+        },
+        "total_tokens": 413
+      },
+      "user": null
+    }
+  }
+]
