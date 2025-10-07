@@ -6,6 +6,7 @@ from .models import (
     WorkflowStatus,
     AgentType,
     ExecutorType,
+    ApprovalStatus,
     
     # Agent models
     Agent,
@@ -37,6 +38,12 @@ from .models import (
     WorkflowExecutionUpdate,
     WorkflowExecutionResponse,
     
+    # Checkpoint models
+    WorkflowCheckpoint,
+    
+    # HITL models
+    HumanApprovalRequest,
+    
     # WebSocket models
     WebSocketMessage,
     WorkflowExecutionEvent,
@@ -47,6 +54,7 @@ __all__ = [
     "WorkflowStatus",
     "AgentType", 
     "ExecutorType",
+    "ApprovalStatus",
     
     # Agent models
     "Agent",
@@ -77,6 +85,12 @@ __all__ = [
     "WorkflowExecutionCreate",
     "WorkflowExecutionUpdate",
     "WorkflowExecutionResponse",
+    
+    # Checkpoint models
+    "WorkflowCheckpoint",
+    
+    # HITL models
+    "HumanApprovalRequest",
     
     # WebSocket models
     "WebSocketMessage",

@@ -36,6 +36,14 @@ class ExecutorType(str, Enum):
     CUSTOM = "custom"
 
 
+class ApprovalStatus(str, Enum):
+    """Approval request status for HITL workflows."""
+    PENDING = "pending"
+    APPROVED = "approved"
+    REJECTED = "rejected"
+    TIMEOUT = "timeout"
+
+
 # Base models
 class TimestampMixin(SQLModel):
     """Mixin for timestamp fields."""
@@ -279,6 +287,34 @@ class WorkflowExecutionResponse(WorkflowExecutionBase):
     workflow_id: int
     created_at: datetime
     updated_at: Optional[datetime]
+
+
+# Workflow checkpoint models
+class WorkflowCheckpoint(SQLModel, table=True):
+    """Workflow checkpoint storage for state persistence."""
+    __tablename__ = "workflow_checkpoints"
+    
+    id: Optional[int] = Field(default=None, primary_key=True)
+    workflow_id: str = Field(index=True, description="Workflow identifier")
+    checkpoint_id: str = Field(index=True, description="Checkpoint identifier")
+    state_data: Dict[str, Any] = Field(sa_column=Column(JSON), description="Serialized workflow state")
+    checkpoint_metadata: Dict[str, Any] = Field(default_factory=dict, sa_column=Column(JSON), description="Additional metadata")
+    created_at: datetime = Field(default_factory=datetime.utcnow)
+
+
+# Human-in-the-Loop models
+class HumanApprovalRequest(SQLModel, table=True):
+    """Human approval requests for HITL workflows."""
+    __tablename__ = "human_approval_requests"
+    
+    id: Optional[int] = Field(default=None, primary_key=True)
+    workflow_id: str = Field(index=True, description="Workflow identifier")
+    request_type: str = Field(description="Type of approval request")
+    request_data: Dict[str, Any] = Field(sa_column=Column(JSON), description="Request data")
+    response_data: Optional[Dict[str, Any]] = Field(default=None, sa_column=Column(JSON), description="Response data")
+    status: ApprovalStatus = Field(default=ApprovalStatus.PENDING, description="Approval status")
+    created_at: datetime = Field(default_factory=datetime.utcnow)
+    updated_at: Optional[datetime] = Field(default=None)
 
 
 # WebSocket message models
