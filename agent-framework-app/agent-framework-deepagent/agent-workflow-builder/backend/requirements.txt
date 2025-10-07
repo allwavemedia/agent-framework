@@ -19,7 +19,8 @@ agent-framework
 # Azure integrations
 azure-identity==1.19.0
 azure-keyvault-secrets==4.7.0
-azure-ai-openai
+# azure-ai-openai  # Package not available - using openai instead
+openai>=1.0.0
 
 # MCP Protocol support
 modelcontextprotocol
