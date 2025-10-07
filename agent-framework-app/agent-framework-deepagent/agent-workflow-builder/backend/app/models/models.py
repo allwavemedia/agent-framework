@@ -281,6 +281,19 @@ class WorkflowExecutionResponse(WorkflowExecutionBase):
     updated_at: Optional[datetime]
 
 
+# Workflow checkpoint models
+class WorkflowCheckpoint(SQLModel, table=True):
+    """Workflow checkpoint storage for state persistence."""
+    __tablename__ = "workflow_checkpoints"
+    
+    id: Optional[int] = Field(default=None, primary_key=True)
+    workflow_id: str = Field(index=True, description="Workflow identifier")
+    checkpoint_id: str = Field(index=True, description="Checkpoint identifier")
+    state_data: Dict[str, Any] = Field(sa_column=Column(JSON), description="Serialized workflow state")
+    checkpoint_metadata: Dict[str, Any] = Field(default_factory=dict, sa_column=Column(JSON), description="Additional metadata")
+    created_at: datetime = Field(default_factory=datetime.utcnow)
+
+
 # WebSocket message models
 class WebSocketMessage(BaseModel):
     """WebSocket message model."""

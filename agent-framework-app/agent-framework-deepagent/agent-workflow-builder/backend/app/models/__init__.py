@@ -37,6 +37,9 @@ from .models import (
     WorkflowExecutionUpdate,
     WorkflowExecutionResponse,
     
+    # Checkpoint models
+    WorkflowCheckpoint,
+    
     # WebSocket models
     WebSocketMessage,
     WorkflowExecutionEvent,
@@ -77,6 +80,9 @@ __all__ = [
     "WorkflowExecutionCreate",
     "WorkflowExecutionUpdate",
     "WorkflowExecutionResponse",
+    
+    # Checkpoint models
+    "WorkflowCheckpoint",
     
     # WebSocket models
     "WebSocketMessage",
