@@ -99,3 +99,19 @@ export interface CheckpointStatusResponse {
   workflow_id?: string;
   checkpoint_id?: string;
 }
+
+export interface ApprovalRequest {
+  id: number;
+  workflow_id: string;
+  request_type: string;
+  request_data: Record<string, any>;
+  status: 'PENDING' | 'APPROVED' | 'REJECTED' | 'TIMEOUT';
+  created_at: string;
+  updated_at?: string;
+}
+
+export interface ApprovalResponse {
+  approved: boolean;
+  feedback?: string;
+  modified_data?: Record<string, any>;
+}

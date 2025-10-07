@@ -175,6 +175,42 @@ export class ApiClient {
       method: 'DELETE',
     });
   }
+
+  // Approval endpoints
+  async getPendingApprovals() {
+    return this.request('/api/v1/approvals/pending');
+  }
+
+  async getWorkflowApprovals(workflowId: string, status?: string) {
+    const params = status ? `?status=${status}` : '';
+    return this.request(`/api/v1/approvals/workflow/${workflowId}${params}`);
+  }
+
+  async getApprovalRequest(requestId: number) {
+    return this.request(`/api/v1/approvals/${requestId}`);
+  }
+
+  async respondToApproval(
+    requestId: number, 
+    approved: boolean, 
+    feedback?: string,
+    modifiedData?: Record<string, any>
+  ) {
+    return this.request(`/api/v1/approvals/${requestId}/respond`, {
+      method: 'POST',
+      body: JSON.stringify({
+        approved,
+        feedback,
+        modified_data: modifiedData,
+      }),
+    });
+  }
+
+  async cancelApproval(requestId: number) {
+    return this.request(`/api/v1/approvals/${requestId}/cancel`, {
+      method: 'POST',
+    });
+  }
 }
 
 export const apiClient = new ApiClient();

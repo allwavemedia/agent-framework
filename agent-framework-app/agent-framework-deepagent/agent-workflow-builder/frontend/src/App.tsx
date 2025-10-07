@@ -16,6 +16,7 @@ import {
 } from '@xyflow/react'
 import { NodePalette } from './components/NodePalette'
 import { CheckpointManager } from './components/CheckpointManager'
+import { ApprovalPanel } from './components/ApprovalPanel'
 import { useAgents, useWorkflow, useWebSocket } from './hooks'
 import { apiClient } from './api/client'
 
@@ -357,6 +358,18 @@ function WorkflowBuilder() {
                   onRestore={() => {
                     setExecutionStatus('Restored');
                     alert('Workflow restored from checkpoint');
+                  }}
+                />
+              </div>
+            )}
+
+            {/* Approval Requests */}
+            {workflowId && (
+              <div className="mt-4">
+                <ApprovalPanel 
+                  workflowId={String(workflowId)}
+                  onApprovalProcessed={() => {
+                    console.log('Approval processed, refreshing workflow state');
                   }}
                 />
               </div>
