@@ -476,26 +476,35 @@ npm run build
 
 ## Future Enhancements
 
-### High Priority
-1. Implement authentication and authorization
-2. Add database migrations (Alembic)
-3. Enhance error handling and recovery
-4. Add comprehensive monitoring and logging
-5. Implement rate limiting
+**📋 See [ENHANCEMENT_PLAN.md](./ENHANCEMENT_PLAN.md) for comprehensive implementation details.**
 
-### Medium Priority
-1. Add drag-and-drop node creation
-2. Implement node configuration panels
-3. Add workflow validation UI
-4. Create execution history viewer
-5. Add dark mode support
+### HIGH PRIORITY - Missing Agent Framework Features
+Based on Microsoft Agent Framework documentation (#file:agent-framework.md) and verified via Microsoft Learn MCP tools:
 
-### Low Priority
-1. Add collaborative editing
-2. Implement workflow templates
-3. Add export/import functionality
-4. Create workflow scheduling
-5. Add analytics and reporting
+1. **Checkpointing & State Persistence** - Enable long-running workflow recovery and pause/resume
+2. **Human-in-the-Loop (HITL)** - Function approvals and request/response patterns
+3. **Handoff Orchestration** - Dynamic agent-to-agent control transfer
+4. **Magentic Orchestration** - Advanced multi-agent collaboration with plan review
+5. **Context Providers & Memory** - Agent memory and state management across turns
+6. **Observability Integration** - OpenTelemetry tracing and metrics
+7. **WorkflowViz Integration** - Visual workflow diagram generation (Mermaid/Graphviz)
+
+### MEDIUM PRIORITY - UI/UX Enhancements
+1. Drag-and-drop node creation
+2. Node configuration panels (Agent, Sequential, Concurrent, Conditional, Handoff, Magentic)
+3. Workflow validation UI with real-time feedback
+4. Execution history viewer with drill-down
+5. Dark mode support
+
+### LOW PRIORITY - Advanced Features  
+1. Collaborative editing with WebSocket/CRDT
+2. Workflow templates library (Sequential, Concurrent, Handoff, Magentic)
+3. Export/Import functionality (JSON/YAML)
+4. Workflow scheduling with cron patterns
+5. Analytics and reporting dashboard
+6. Authentication and authorization
+7. Database migrations (Alembic)
+8. Rate limiting
 
 ## Conclusion
 
