@@ -59,8 +59,26 @@ class WorkflowVisualizer:
             }
     
     async def generate_mermaid(self, workflow: WorkflowResponse) -> Dict[str, Any]:
-        """Generate Mermaid diagram definition."""
+        """Generate Mermaid diagram definition using Agent Framework WorkflowViz when available."""
         try:
+            # Try to use Agent Framework WorkflowViz if available
+            if WORKFLOW_VIZ_AVAILABLE:
+                af_workflow = await self._build_agent_framework_workflow(workflow)
+                if af_workflow:
+                    viz = WorkflowViz(af_workflow)
+                    mermaid_def = viz.to_mermaid()
+                    
+                    return {
+                        "format": "mermaid",
+                        "content": mermaid_def,
+                        "workflow_id": workflow.id,
+                        "workflow_name": workflow.name,
+                        "node_count": len(workflow.nodes),
+                        "edge_count": len(workflow.edges),
+                        "source": "agent_framework_viz"
+                    }
+            
+            # Fallback to custom Mermaid generation
             mermaid_def = self._build_mermaid_diagram(workflow)
             
             return {
@@ -69,7 +87,8 @@ class WorkflowVisualizer:
                 "workflow_id": workflow.id,
                 "workflow_name": workflow.name,
                 "node_count": len(workflow.nodes),
-                "edge_count": len(workflow.edges)
+                "edge_count": len(workflow.edges),
+                "source": "custom_builder"
             }
             
         except Exception as e:
@@ -77,7 +96,7 @@ class WorkflowVisualizer:
             raise
     
     async def generate_svg(self, workflow: WorkflowResponse) -> Dict[str, Any]:
-        """Generate SVG visualization."""
+        """Generate SVG visualization using Agent Framework WorkflowViz."""
         if not WORKFLOW_VIZ_AVAILABLE:
             return {
                 "format": "svg",
@@ -86,23 +105,49 @@ class WorkflowVisualizer:
             }
         
         try:
-            # Note: This requires building an actual Agent Framework workflow
-            # and using WorkflowViz.export(format="svg")
-            # For now, return placeholder
+            # Build an Agent Framework workflow from the workflow response
+            af_workflow = await self._build_agent_framework_workflow(workflow)
+            
+            if af_workflow:
+                # Use WorkflowViz to generate SVG
+                viz = WorkflowViz(af_workflow)
+                svg_path = viz.export(format="svg")
+                
+                # Read the SVG content
+                with open(svg_path, 'r') as f:
+                    svg_content = f.read()
+                
+                return {
+                    "format": "svg",
+                    "content": svg_content,
+                    "workflow_id": workflow.id,
+                    "workflow_name": workflow.name,
+                    "file_path": svg_path
+                }
+            else:
+                # Fallback to placeholder
+                return {
+                    "format": "svg",
+                    "content": await self._generate_svg_placeholder(workflow),
+                    "workflow_id": workflow.id,
+                    "workflow_name": workflow.name,
+                    "note": "Using placeholder - workflow not executable"
+                }
+            
+        except ImportError as e:
+            logger.warning(f"GraphViz not available: {e}")
             return {
                 "format": "svg",
-                "content": await self._generate_svg_placeholder(workflow),
-                "workflow_id": workflow.id,
-                "workflow_name": workflow.name,
-                "note": "SVG generation requires building executable workflow"
+                "error": "GraphViz not installed",
+                "message": "Install graphviz and agent-framework[viz] to enable SVG export",
+                "fallback_content": await self._generate_svg_placeholder(workflow)
             }
-            
         except Exception as e:
             logger.error(f"Error generating SVG: {e}")
             raise
     
     async def generate_png(self, workflow: WorkflowResponse) -> Dict[str, Any]:
-        """Generate PNG visualization."""
+        """Generate PNG visualization using Agent Framework WorkflowViz."""
         if not WORKFLOW_VIZ_AVAILABLE:
             return {
                 "format": "png",
@@ -111,23 +156,62 @@ class WorkflowVisualizer:
             }
         
         try:
-            # Note: This requires building an actual Agent Framework workflow
-            # and using WorkflowViz.export(format="png")
+            # Build an Agent Framework workflow from the workflow response
+            af_workflow = await self._build_agent_framework_workflow(workflow)
+            
+            if af_workflow:
+                # Use WorkflowViz to generate PNG
+                viz = WorkflowViz(af_workflow)
+                png_path = viz.export(format="png")
+                
+                return {
+                    "format": "png",
+                    "workflow_id": workflow.id,
+                    "workflow_name": workflow.name,
+                    "file_path": png_path,
+                    "message": "PNG generated successfully"
+                }
+            else:
+                return {
+                    "format": "png",
+                    "content": None,
+                    "workflow_id": workflow.id,
+                    "workflow_name": workflow.name,
+                    "note": "PNG generation requires executable workflow"
+                }
+            
+        except ImportError as e:
+            logger.warning(f"GraphViz not available: {e}")
             return {
                 "format": "png",
-                "content": None,
-                "workflow_id": workflow.id,
-                "workflow_name": workflow.name,
-                "note": "PNG generation requires building executable workflow and GraphViz"
+                "error": "GraphViz not installed",
+                "message": "Install graphviz and agent-framework[viz] to enable PNG export"
             }
-            
         except Exception as e:
             logger.error(f"Error generating PNG: {e}")
             raise
     
     async def generate_dot(self, workflow: WorkflowResponse) -> Dict[str, Any]:
-        """Generate Graphviz DOT format."""
+        """Generate Graphviz DOT format using Agent Framework WorkflowViz when available."""
         try:
+            # Try to use Agent Framework WorkflowViz if available
+            if WORKFLOW_VIZ_AVAILABLE:
+                af_workflow = await self._build_agent_framework_workflow(workflow)
+                if af_workflow:
+                    viz = WorkflowViz(af_workflow)
+                    dot_def = viz.to_digraph()
+                    
+                    return {
+                        "format": "dot",
+                        "content": dot_def,
+                        "workflow_id": workflow.id,
+                        "workflow_name": workflow.name,
+                        "node_count": len(workflow.nodes),
+                        "edge_count": len(workflow.edges),
+                        "source": "agent_framework_viz"
+                    }
+            
+            # Fallback to custom DOT generation
             dot_def = self._build_dot_diagram(workflow)
             
             return {
@@ -136,7 +220,8 @@ class WorkflowVisualizer:
                 "workflow_id": workflow.id,
                 "workflow_name": workflow.name,
                 "node_count": len(workflow.nodes),
-                "edge_count": len(workflow.edges)
+                "edge_count": len(workflow.edges),
+                "source": "custom_builder"
             }
             
         except Exception as e:
@@ -305,6 +390,64 @@ class WorkflowVisualizer:
         lines.append("}")
         
         return "\n".join(lines)
+    
+    async def _build_agent_framework_workflow(self, workflow: WorkflowResponse):
+        """
+        Build an Agent Framework Workflow from a WorkflowResponse.
+        
+        This converts the database workflow model into an executable Agent Framework
+        workflow that can be used with WorkflowViz.
+        
+        Args:
+            workflow: WorkflowResponse model from database
+        
+        Returns:
+            Agent Framework Workflow or None if conversion not possible
+        """
+        try:
+            from agent_framework import WorkflowBuilder, Executor, handler, WorkflowContext
+            from typing_extensions import Never
+            
+            # Create simple executors for visualization purposes
+            # Note: These are placeholder executors just for visualization
+            executors = {}
+            
+            for node in workflow.nodes:
+                # Create a simple executor for each node
+                class DynamicExecutor(Executor):
+                    """Placeholder executor for visualization."""
+                    
+                    @handler
+                    async def execute(self, data: str, ctx: WorkflowContext[Never, str]) -> None:
+                        await ctx.yield_output(data)
+                
+                executors[node.id] = DynamicExecutor(id=f"node_{node.id}")
+            
+            # Build the workflow
+            builder = WorkflowBuilder()
+            
+            # Find start node
+            start_node = next((n for n in workflow.nodes if n.is_start_node), None)
+            if start_node and start_node.id in executors:
+                builder.set_start_executor(executors[start_node.id])
+            
+            # Add edges
+            for edge in workflow.edges:
+                source_executor = executors.get(edge.source_node_id)
+                target_executor = executors.get(edge.target_node_id)
+                
+                if source_executor and target_executor:
+                    builder.add_edge(source_executor, target_executor)
+            
+            # Build and return
+            af_workflow = builder.build()
+            logger.info(f"Built Agent Framework workflow for visualization: {workflow.name}")
+            
+            return af_workflow
+            
+        except Exception as e:
+            logger.warning(f"Could not build Agent Framework workflow for visualization: {e}")
+            return None
     
     async def _generate_svg_placeholder(self, workflow: WorkflowResponse) -> str:
         """Generate a simple SVG placeholder."""
