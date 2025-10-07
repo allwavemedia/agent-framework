@@ -44,6 +44,10 @@ from .models import (
     # HITL models
     HumanApprovalRequest,
     
+    # Orchestration models
+    HandoffState,
+    PlanReviewRequest,
+    
     # WebSocket models
     WebSocketMessage,
     WorkflowExecutionEvent,
@@ -91,6 +95,10 @@ __all__ = [
     
     # HITL models
     "HumanApprovalRequest",
+    
+    # Orchestration models
+    "HandoffState",
+    "PlanReviewRequest",
     
     # WebSocket models
     "WebSocketMessage",
