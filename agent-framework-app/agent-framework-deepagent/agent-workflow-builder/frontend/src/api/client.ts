@@ -157,6 +157,24 @@ export class ApiClient {
       method: 'POST',
     });
   }
+
+  // Checkpoint endpoints
+  async getCheckpoints(workflowId: string) {
+    return this.request(`/api/v1/checkpoints/${workflowId}`);
+  }
+
+  async restoreCheckpoint(workflowId: string, checkpointId?: string) {
+    return this.request(`/api/v1/checkpoints/${workflowId}/restore`, {
+      method: 'POST',
+      body: JSON.stringify({ checkpoint_id: checkpointId }),
+    });
+  }
+
+  async deleteCheckpoint(workflowId: string, checkpointId: string) {
+    return this.request(`/api/v1/checkpoints/${workflowId}/${checkpointId}`, {
+      method: 'DELETE',
+    });
+  }
 }
 
 export const apiClient = new ApiClient();

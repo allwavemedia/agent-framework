@@ -86,3 +86,16 @@ export interface ExecutionEvent {
   timestamp: string;
   data?: any;
 }
+
+export interface Checkpoint {
+  checkpoint_id: string;
+  created_at: string;
+  metadata: Record<string, any>;
+}
+
+export interface CheckpointStatusResponse {
+  status: string;
+  message?: string;
+  workflow_id?: string;
+  checkpoint_id?: string;
+}

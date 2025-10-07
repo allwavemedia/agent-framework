@@ -15,6 +15,7 @@ import {
   ReactFlowProvider,
 } from '@xyflow/react'
 import { NodePalette } from './components/NodePalette'
+import { CheckpointManager } from './components/CheckpointManager'
 import { useAgents, useWorkflow, useWebSocket } from './hooks'
 import { apiClient } from './api/client'
 
@@ -348,6 +349,19 @@ function WorkflowBuilder() {
               </div>
             </div>
             
+            {/* Checkpoints */}
+            {workflowId && (
+              <div className="mt-4">
+                <CheckpointManager 
+                  workflowId={String(workflowId)} 
+                  onRestore={() => {
+                    setExecutionStatus('Restored');
+                    alert('Workflow restored from checkpoint');
+                  }}
+                />
+              </div>
+            )}
+
             {/* Agents */}
             {!agentsLoading && agents.length > 0 && (
               <div className="p-3 bg-white rounded-md shadow-sm border border-gray-200">
