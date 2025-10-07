@@ -55,12 +55,13 @@ async def get_agent(
 
 
 @router.put("/{agent_id}", response_model=AgentResponse)
+@router.patch("/{agent_id}", response_model=AgentResponse)
 async def update_agent(
     agent_id: int,
     agent_data: AgentUpdate,
     db: Session = Depends(get_db)
 ) -> AgentResponse:
-    """Update an agent."""
+    """Update an agent (supports both PUT and PATCH)."""
     service = AgentService(db)
     agent = await service.update_agent(agent_id, agent_data)
     if not agent:

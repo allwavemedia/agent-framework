@@ -6,7 +6,7 @@ from typing import AsyncGenerator
 
 from sqlmodel import SQLModel, create_engine, Session
 from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine
-from sqlalchemy.orm import sessionmaker
+from sqlalchemy.orm import sessionmaker as sqlalchemy_sessionmaker
 
 from app.core.config import settings
 
@@ -32,12 +32,13 @@ else:
 
 # Create session factory
 if async_engine:
-    AsyncSessionLocal = sessionmaker(
+    AsyncSessionLocal = sqlalchemy_sessionmaker(
         async_engine, class_=AsyncSession, expire_on_commit=False
     )
     SessionLocal = None
 else:
-    SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
+    # Don't use sessionmaker for SQLModel - create Session directly
+    SessionLocal = None
     AsyncSessionLocal = None
 
 
@@ -70,12 +71,10 @@ async def get_async_session() -> AsyncGenerator[AsyncSession, None]:
             await session.close()
 
 
-def get_session() -> Session:
-    """Get synchronous database session."""
-    if not SessionLocal:
-        raise RuntimeError("Sync session not configured")
-    
-    with SessionLocal() as session:
+def get_session():
+    """Get synchronous database session using SQLModel."""
+    # Use SQLModel's Session directly with the engine
+    with Session(engine) as session:
         try:
             yield session
         except Exception:

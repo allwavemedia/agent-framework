@@ -1,0 +1,546 @@
+[
+  {
+    "test_id": 1,
+    "test_name": "ChatAgent Creation Code",
+    "query": "Show me Python code to create a ChatAgent with Azure OpenAI. Include the imports and explain each parameter.",
+    "response": "Certainly! To create a ChatAgent using Azure OpenAI in Python, you'll need to use the `openai` package, which provides an interface for accessing Azure OpenAI services. Below is an example of how to set this up, including necessary imports and explanations for each parameter involved.\n\n### Example Code\n\n```python\nimport openai\n\n# Set up the Azure OpenAI configuration\n# Replace 'YOUR_AZURE_OPENAI_ENDPOINT' and 'YOUR_AZURE_OPENAI_KEY' with your account's details\nopenai.api_type = \"azure\"\nopenai.api_base = \"https://YOUR_AZURE_OPENAI_ENDPOINT.azure.com/\"\nopenai.api_version = \"2023-05-15\"\nopenai.api_key = \"YOUR_AZURE_OPENAI_KEY\"\n\n# Create a ChatAgent function\ndef create_chat_agent(prompt):\n    response = openai.ChatCompletion.create(\n        engine=\"YOUR_MODEL_NAME\",  # The name of the deployment in Azure\n        messages=[\n            {\"role\": \"user\", \"content\": prompt}\n        ],\n        max_tokens=150,          # The maximum number of tokens to generate\n        temperature=0.7,        # Controls randomness in the output\n        top_p=1.0,              # Nucleus sampling; controls diversity of the output\n        frequency_penalty=0.0,  # Penalty for using common words\n        presence_penalty=0.0    # Penalty for new topics\n    )\n    return response.choices[0].message['content']\n\n# Example usage\nif __name__ == \"__main__\":\n    user_prompt = \"Hello, how can I improve my coding skills?\"\n    response = create_chat_agent(user_prompt)\n    print(response)\n```\n\n### Explanation of Parameters\n\n1. **`import openai`**: Imports the `openai` library, which provides access to OpenAI's API functionalities, including support for Azure OpenAI.\n\n2. **`openai.api_type`**: This specifies the type of the OpenAI API being used. Here, we set it to `\"azure\"` to indicate that we are working with Azure's instance of OpenAI.\n\n3. **`openai.api_base`**: This is the base URL for your Azure OpenAI resource. You will need to replace `YOUR_AZURE_OPENAI_ENDPOINT` with the appropriate endpoint provided by your Azure setup.\n\n4. **`openai.api_version`**: Defines the version of the API you want to use. Keeping this updated is important as features and supported models may vary between versions. The specified version here is a commonly used one, but it's good practice to check for the latest version available.\n\n5. **`openai.api_key`**: This is your Azure OpenAI API key, which authenticates your requests. Ensure to replace `YOUR_AZURE_OPENAI_KEY` with the actual key obtained from your Azure account. Keep this key secure.\n\n6. **`engine`**: In the `create` method, this parameter specifies the name of the model you are using, which corresponds to a deployment you have created in the Azure Cognitive Services.\n\n7. **`messages`**: This parameter takes a list of message objects, where each message has a `role` and `content`. The `\"user\"` role usually indicates the message from the user seeking a response. Additional roles like `\"assistant\"` or `\"system\"` can also be included if context is needed.\n\n8. **`max_tokens`**: It sets the maximum length of the generated response in tokens. One token is roughly equivalent to 4 characters of English text. Thus, setting this parameter controls how verbose the response can be.\n\n9. **`temperature`**: This parameter controls the randomness of the output. Lower values make the output more deterministic, while higher values lead to more randomness. A setting of 0.7 gives a good balance for creative responses.\n\n10. **`top_p`**: This is another sampling parameter (nucleus sampling) that controls the diversity of the output. Setting it to 1.0 means no cutoff on the most likely words to consider.\n\n11. **`frequency_penalty`**: This parameter reduces the likelihood of the model repeating the same lines of text within a varied context. A value of 0.0 means no penalty.\n\n12. **`presence_penalty`**: Similar to frequency_penalty, this parameter discourages the model from introducing new topics. A value of 0.0 means no penalty.\n\n### Usage\nYou can modify the `user_prompt` in the example to ask different questions or prompts accordingly. This example code will connect to Azure OpenAI, take a user-provided prompt, and send it to the Chat model, then print out the model's response.",
+    "duration": 22.737262964248657,
+    "timestamp": "2025-10-06T22:57:40.330703",
+    "status": "success",
+    "has_code": true,
+    "response_length": 4227,
+    "full_result": {
+      "id": "resp_3de9f78b382d",
+      "created_at": 1759805860.328656,
+      "error": null,
+      "incomplete_details": null,
+      "instructions": null,
+      "metadata": null,
+      "model": "agent-framework",
+      "object": "response",
+      "output": [
+        {
+          "id": "msg_5e0dc835",
+          "content": [
+            {
+              "annotations": [],
+              "text": "Certainly! To create a ChatAgent using Azure OpenAI in Python, you'll need to use the `openai` package, which provides an interface for accessing Azure OpenAI services. Below is an example of how to set this up, including necessary imports and explanations for each parameter involved.\n\n### Example Code\n\n```python\nimport openai\n\n# Set up the Azure OpenAI configuration\n# Replace 'YOUR_AZURE_OPENAI_ENDPOINT' and 'YOUR_AZURE_OPENAI_KEY' with your account's details\nopenai.api_type = \"azure\"\nopenai.api_base = \"https://YOUR_AZURE_OPENAI_ENDPOINT.azure.com/\"\nopenai.api_version = \"2023-05-15\"\nopenai.api_key = \"YOUR_AZURE_OPENAI_KEY\"\n\n# Create a ChatAgent function\ndef create_chat_agent(prompt):\n    response = openai.ChatCompletion.create(\n        engine=\"YOUR_MODEL_NAME\",  # The name of the deployment in Azure\n        messages=[\n            {\"role\": \"user\", \"content\": prompt}\n        ],\n        max_tokens=150,          # The maximum number of tokens to generate\n        temperature=0.7,        # Controls randomness in the output\n        top_p=1.0,              # Nucleus sampling; controls diversity of the output\n        frequency_penalty=0.0,  # Penalty for using common words\n        presence_penalty=0.0    # Penalty for new topics\n    )\n    return response.choices[0].message['content']\n\n# Example usage\nif __name__ == \"__main__\":\n    user_prompt = \"Hello, how can I improve my coding skills?\"\n    response = create_chat_agent(user_prompt)\n    print(response)\n```\n\n### Explanation of Parameters\n\n1. **`import openai`**: Imports the `openai` library, which provides access to OpenAI's API functionalities, including support for Azure OpenAI.\n\n2. **`openai.api_type`**: This specifies the type of the OpenAI API being used. Here, we set it to `\"azure\"` to indicate that we are working with Azure's instance of OpenAI.\n\n3. **`openai.api_base`**: This is the base URL for your Azure OpenAI resource. You will need to replace `YOUR_AZURE_OPENAI_ENDPOINT` with the appropriate endpoint provided by your Azure setup.\n\n4. **`openai.api_version`**: Defines the version of the API you want to use. Keeping this updated is important as features and supported models may vary between versions. The specified version here is a commonly used one, but it's good practice to check for the latest version available.\n\n5. **`openai.api_key`**: This is your Azure OpenAI API key, which authenticates your requests. Ensure to replace `YOUR_AZURE_OPENAI_KEY` with the actual key obtained from your Azure account. Keep this key secure.\n\n6. **`engine`**: In the `create` method, this parameter specifies the name of the model you are using, which corresponds to a deployment you have created in the Azure Cognitive Services.\n\n7. **`messages`**: This parameter takes a list of message objects, where each message has a `role` and `content`. The `\"user\"` role usually indicates the message from the user seeking a response. Additional roles like `\"assistant\"` or `\"system\"` can also be included if context is needed.\n\n8. **`max_tokens`**: It sets the maximum length of the generated response in tokens. One token is roughly equivalent to 4 characters of English text. Thus, setting this parameter controls how verbose the response can be.\n\n9. **`temperature`**: This parameter controls the randomness of the output. Lower values make the output more deterministic, while higher values lead to more randomness. A setting of 0.7 gives a good balance for creative responses.\n\n10. **`top_p`**: This is another sampling parameter (nucleus sampling) that controls the diversity of the output. Setting it to 1.0 means no cutoff on the most likely words to consider.\n\n11. **`frequency_penalty`**: This parameter reduces the likelihood of the model repeating the same lines of text within a varied context. A value of 0.0 means no penalty.\n\n12. **`presence_penalty`**: Similar to frequency_penalty, this parameter discourages the model from introducing new topics. A value of 0.0 means no penalty.\n\n### Usage\nYou can modify the `user_prompt` in the example to ask different questions or prompts accordingly. This example code will connect to Azure OpenAI, take a user-provided prompt, and send it to the Chat model, then print out the model's response.",
+              "type": "output_text",
+              "logprobs": null
+            }
+          ],
+          "role": "assistant",
+          "status": "completed",
+          "type": "message"
+        }
+      ],
+      "parallel_tool_calls": false,
+      "temperature": null,
+      "tool_choice": "none",
+      "tools": [],
+      "top_p": null,
+      "background": null,
+      "conversation": null,
+      "max_output_tokens": null,
+      "max_tool_calls": null,
+      "previous_response_id": null,
+      "prompt": null,
+      "prompt_cache_key": null,
+      "reasoning": null,
+      "safety_identifier": null,
+      "service_tier": null,
+      "status": null,
+      "text": null,
+      "top_logprobs": null,
+      "truncation": null,
+      "usage": {
+        "input_tokens": 27,
+        "input_tokens_details": {
+          "cached_tokens": 0
+        },
+        "output_tokens": 1056,
+        "output_tokens_details": {
+          "reasoning_tokens": 0
+        },
+        "total_tokens": 1083
+      },
+      "user": null
+    }
+  },
+  {
+    "test_id": 2,
+    "test_name": "Sequential Workflow Implementation",
+    "query": "Write Python code for a sequential workflow with 3 agents using Microsoft Agent Framework's WorkflowBuilder. Show the complete implementation.",
+    "response": "Certainly! Below is an example Python code that demonstrates how to create a sequential workflow with three agents using Microsoft's Agent Framework's WorkflowBuilder. Each agent in this workflow performs a simple task sequentially.\n\n```python\nfrom microsoft_agent_framework import WorkflowBuilder, Agent\n\n# Define the first agent\nclass AgentOne(Agent):\n    def execute(self, input_data=None):\n        print(\"Agent One is processing the input data.\")\n        # Simulate processing and generate output\n        output_data = {\"value\": input_data[\"value\"] + 1}\n        return output_data\n\n\n# Define the second agent\nclass AgentTwo(Agent):\n    def execute(self, input_data=None):\n        print(\"Agent Two is processing the result from Agent One.\")\n        # Simulate processing and generate output\n        output_data = {\"value\": input_data[\"value\"] * 2}\n        return output_data\n\n\n# Define the third agent\nclass AgentThree(Agent):\n    def execute(self, input_data=None):\n        print(\"Agent Three is processing the result from Agent Two.\")\n        # Simulate processing and generate output\n        output_data = {\"value\": input_data[\"value\"] - 3}\n        return output_data\n\n\ndef main():\n    # Create an instance of WorkflowBuilder\n    workflow = WorkflowBuilder()\n\n    # Initialize agents\n    agent_one = AgentOne()\n    agent_two = AgentTwo()\n    agent_three = AgentThree()\n\n    # Build the sequential workflow\n    workflow.add_agent(agent_one)\n    workflow.add_agent(agent_two)\n    workflow.add_agent(agent_three)\n\n    # Set the input for the first agent\n    initial_data = {\"value\": 5}\n    \n    # Run the workflow\n    result = workflow.run(initial_data)\n\n    print(\"Final result from the workflow:\", result)\n\n    \nif __name__ == \"__main__\":\n    main()\n```\n\n### Explanation:\n1. **Agents**: Three classes `AgentOne`, `AgentTwo`, and `AgentThree` are defined, each extending `Agent`. Each agent includes an `execute` method that takes some input data, processes it, and returns the output.\n2. **WorkflowBuilder**: An instance of `WorkflowBuilder` is created to manage the sequential workflow.\n3. **Adding Agents**: Agents are added to the workflow in sequence.\n4. **Execution**: The `run` method of the workflow is executed with initial data, and the final result is printed.\n\n### Note:\n- Make sure to have the Microsoft Agent Framework properly set up in your environment to execute this code.\n- Adjust the import statement according to the actual package name of the Microsoft Agent Framework if it differs.",
+    "duration": 14.959744215011597,
+    "timestamp": "2025-10-06T22:57:57.293215",
+    "status": "success",
+    "has_code": true,
+    "response_length": 2509,
+    "full_result": {
+      "id": "resp_1849b8bca00c",
+      "created_at": 1759805877.290278,
+      "error": null,
+      "incomplete_details": null,
+      "instructions": null,
+      "metadata": null,
+      "model": "agent-framework",
+      "object": "response",
+      "output": [
+        {
+          "id": "msg_93c119f7",
+          "content": [
+            {
+              "annotations": [],
+              "text": "Certainly! Below is an example Python code that demonstrates how to create a sequential workflow with three agents using Microsoft's Agent Framework's WorkflowBuilder. Each agent in this workflow performs a simple task sequentially.\n\n```python\nfrom microsoft_agent_framework import WorkflowBuilder, Agent\n\n# Define the first agent\nclass AgentOne(Agent):\n    def execute(self, input_data=None):\n        print(\"Agent One is processing the input data.\")\n        # Simulate processing and generate output\n        output_data = {\"value\": input_data[\"value\"] + 1}\n        return output_data\n\n\n# Define the second agent\nclass AgentTwo(Agent):\n    def execute(self, input_data=None):\n        print(\"Agent Two is processing the result from Agent One.\")\n        # Simulate processing and generate output\n        output_data = {\"value\": input_data[\"value\"] * 2}\n        return output_data\n\n\n# Define the third agent\nclass AgentThree(Agent):\n    def execute(self, input_data=None):\n        print(\"Agent Three is processing the result from Agent Two.\")\n        # Simulate processing and generate output\n        output_data = {\"value\": input_data[\"value\"] - 3}\n        return output_data\n\n\ndef main():\n    # Create an instance of WorkflowBuilder\n    workflow = WorkflowBuilder()\n\n    # Initialize agents\n    agent_one = AgentOne()\n    agent_two = AgentTwo()\n    agent_three = AgentThree()\n\n    # Build the sequential workflow\n    workflow.add_agent(agent_one)\n    workflow.add_agent(agent_two)\n    workflow.add_agent(agent_three)\n\n    # Set the input for the first agent\n    initial_data = {\"value\": 5}\n    \n    # Run the workflow\n    result = workflow.run(initial_data)\n\n    print(\"Final result from the workflow:\", result)\n\n    \nif __name__ == \"__main__\":\n    main()\n```\n\n### Explanation:\n1. **Agents**: Three classes `AgentOne`, `AgentTwo`, and `AgentThree` are defined, each extending `Agent`. Each agent includes an `execute` method that takes some input data, processes it, and returns the output.\n2. **WorkflowBuilder**: An instance of `WorkflowBuilder` is created to manage the sequential workflow.\n3. **Adding Agents**: Agents are added to the workflow in sequence.\n4. **Execution**: The `run` method of the workflow is executed with initial data, and the final result is printed.\n\n### Note:\n- Make sure to have the Microsoft Agent Framework properly set up in your environment to execute this code.\n- Adjust the import statement according to the actual package name of the Microsoft Agent Framework if it differs.",
+              "type": "output_text",
+              "logprobs": null
+            }
+          ],
+          "role": "assistant",
+          "status": "completed",
+          "type": "message"
+        }
+      ],
+      "parallel_tool_calls": false,
+      "temperature": null,
+      "tool_choice": "none",
+      "tools": [],
+      "top_p": null,
+      "background": null,
+      "conversation": null,
+      "max_output_tokens": null,
+      "max_tool_calls": null,
+      "previous_response_id": null,
+      "prompt": null,
+      "prompt_cache_key": null,
+      "reasoning": null,
+      "safety_identifier": null,
+      "service_tier": null,
+      "status": null,
+      "text": null,
+      "top_logprobs": null,
+      "truncation": null,
+      "usage": {
+        "input_tokens": 35,
+        "input_tokens_details": {
+          "cached_tokens": 0
+        },
+        "output_tokens": 627,
+        "output_tokens_details": {
+          "reasoning_tokens": 0
+        },
+        "total_tokens": 662
+      },
+      "user": null
+    }
+  },
+  {
+    "test_id": 3,
+    "test_name": "Agent with Custom Tools",
+    "query": "Create a ChatAgent with custom tool/function calling capabilities. Show how to define tools and register them with the agent in Agent Framework.",
+    "response": "To create a ChatAgent with custom tool/function calling capabilities using the Agent Framework, follow the steps below. This includes defining tools, the agent's setup, and registering those tools with the agent.\n\n### Step 1: Define Your Tools\n\nFirst, you need to define the tools that your ChatAgent will use. These can be functions or APIs that perform specific tasks.\n\n#### Example Tool Definition\n\n```python\nclass WeatherTool:\n    def get_weather(self, location):\n        # Imagine this function connects to a weather API\n        return f\"The weather in {location} is sunny.\"\n\nclass CalculatorTool:\n    def add(self, a, b):\n        return a + b\n\n    def subtract(self, a, b):\n        return a - b\n```\n\n### Step 2: Register Your Tools\n\nNext, you need to create a way to register these tools with the Agent Framework. The tools should be registered when the agent is initialized.\n\n#### Example Registration of Tools\n\n```python\ndef register_tools(agent):\n    # Registering individual tools\n    agent.register_tool(\"weather_tool\", WeatherTool())\n    agent.register_tool(\"calculator_tool\", CalculatorTool())\n```\n\n### Step 3: Setup the ChatAgent\n\nNow you can create your ChatAgent and incorporate the tool registration. This involves initializing the agent and calling the function to register the tools.\n\n#### Example ChatAgent Setup\n\n```python\nfrom agent_framework import ChatAgent\n\n# Initialize the ChatAgent\nmy_chat_agent = ChatAgent(name=\"CustomChatAgent\")\n\n# Register the tools with the agent\nregister_tools(my_chat_agent)\n\n# Define how to use the tools within the agent's responses\ndef agent_response_handler(user_input):\n    if \"weather\" in user_input:\n        location = user_input.split(\"in\")[-1].strip()\n        response = my_chat_agent.call_tool(\"weather_tool.get_weather\", location)\n    elif \"add\" in user_input:\n        numbers = list(map(int, user_input.split()[1:3]))\n        response = my_chat_agent.call_tool(\"calculator_tool.add\", numbers[0], numbers[1])\n    else:\n        response = \"I'm not sure how to help with that.\"\n\n    return response\n```\n\n### Step 4: Running the Agent\n\nTo use the agent, you would call its response handler with user inputs.\n\n#### Example Interaction\n\n```python\nuser_query1 = \"What's the weather in New York?\"\nresponse1 = agent_response_handler(user_query1)\nprint(response1)  # Output: \"The weather in New York is sunny.\"\n\nuser_query2 = \"What is the sum of 5 and 7?\"\nresponse2 = agent_response_handler(user_query2)\nprint(response2)  # Output: 12\n```\n\n### Summary\n\n1. **Define Tools**: Create classes that encapsulate specific functionality.\n2. **Register Tools**: Use a function to register these tools with your ChatAgent during its initialization.\n3. **Setup Agent**: Initialize the ChatAgent and allow it to call the registered tools based on user input.\n4. **Interaction**: Handle user queries and provide responses based on the tool's output.\n\nThis is a simplified illustration; real implementations may include error handling, validation, and more advanced interactions.",
+    "duration": 14.158619165420532,
+    "timestamp": "2025-10-06T22:58:13.454287",
+    "status": "success",
+    "has_code": true,
+    "response_length": 3019,
+    "full_result": {
+      "id": "resp_fc8731e6662a",
+      "created_at": 1759805893.452776,
+      "error": null,
+      "incomplete_details": null,
+      "instructions": null,
+      "metadata": null,
+      "model": "agent-framework",
+      "object": "response",
+      "output": [
+        {
+          "id": "msg_d4902b2c",
+          "content": [
+            {
+              "annotations": [],
+              "text": "To create a ChatAgent with custom tool/function calling capabilities using the Agent Framework, follow the steps below. This includes defining tools, the agent's setup, and registering those tools with the agent.\n\n### Step 1: Define Your Tools\n\nFirst, you need to define the tools that your ChatAgent will use. These can be functions or APIs that perform specific tasks.\n\n#### Example Tool Definition\n\n```python\nclass WeatherTool:\n    def get_weather(self, location):\n        # Imagine this function connects to a weather API\n        return f\"The weather in {location} is sunny.\"\n\nclass CalculatorTool:\n    def add(self, a, b):\n        return a + b\n\n    def subtract(self, a, b):\n        return a - b\n```\n\n### Step 2: Register Your Tools\n\nNext, you need to create a way to register these tools with the Agent Framework. The tools should be registered when the agent is initialized.\n\n#### Example Registration of Tools\n\n```python\ndef register_tools(agent):\n    # Registering individual tools\n    agent.register_tool(\"weather_tool\", WeatherTool())\n    agent.register_tool(\"calculator_tool\", CalculatorTool())\n```\n\n### Step 3: Setup the ChatAgent\n\nNow you can create your ChatAgent and incorporate the tool registration. This involves initializing the agent and calling the function to register the tools.\n\n#### Example ChatAgent Setup\n\n```python\nfrom agent_framework import ChatAgent\n\n# Initialize the ChatAgent\nmy_chat_agent = ChatAgent(name=\"CustomChatAgent\")\n\n# Register the tools with the agent\nregister_tools(my_chat_agent)\n\n# Define how to use the tools within the agent's responses\ndef agent_response_handler(user_input):\n    if \"weather\" in user_input:\n        location = user_input.split(\"in\")[-1].strip()\n        response = my_chat_agent.call_tool(\"weather_tool.get_weather\", location)\n    elif \"add\" in user_input:\n        numbers = list(map(int, user_input.split()[1:3]))\n        response = my_chat_agent.call_tool(\"calculator_tool.add\", numbers[0], numbers[1])\n    else:\n        response = \"I'm not sure how to help with that.\"\n\n    return response\n```\n\n### Step 4: Running the Agent\n\nTo use the agent, you would call its response handler with user inputs.\n\n#### Example Interaction\n\n```python\nuser_query1 = \"What's the weather in New York?\"\nresponse1 = agent_response_handler(user_query1)\nprint(response1)  # Output: \"The weather in New York is sunny.\"\n\nuser_query2 = \"What is the sum of 5 and 7?\"\nresponse2 = agent_response_handler(user_query2)\nprint(response2)  # Output: 12\n```\n\n### Summary\n\n1. **Define Tools**: Create classes that encapsulate specific functionality.\n2. **Register Tools**: Use a function to register these tools with your ChatAgent during its initialization.\n3. **Setup Agent**: Initialize the ChatAgent and allow it to call the registered tools based on user input.\n4. **Interaction**: Handle user queries and provide responses based on the tool's output.\n\nThis is a simplified illustration; real implementations may include error handling, validation, and more advanced interactions.",
+              "type": "output_text",
+              "logprobs": null
+            }
+          ],
+          "role": "assistant",
+          "status": "completed",
+          "type": "message"
+        }
+      ],
+      "parallel_tool_calls": false,
+      "temperature": null,
+      "tool_choice": "none",
+      "tools": [],
+      "top_p": null,
+      "background": null,
+      "conversation": null,
+      "max_output_tokens": null,
+      "max_tool_calls": null,
+      "previous_response_id": null,
+      "prompt": null,
+      "prompt_cache_key": null,
+      "reasoning": null,
+      "safety_identifier": null,
+      "service_tier": null,
+      "status": null,
+      "text": null,
+      "top_logprobs": null,
+      "truncation": null,
+      "usage": {
+        "input_tokens": 36,
+        "input_tokens_details": {
+          "cached_tokens": 0
+        },
+        "output_tokens": 754,
+        "output_tokens_details": {
+          "reasoning_tokens": 0
+        },
+        "total_tokens": 790
+      },
+      "user": null
+    }
+  },
+  {
+    "test_id": 4,
+    "test_name": "Concurrent Workflow Pattern",
+    "query": "Implement a concurrent workflow pattern in Agent Framework where multiple agents can run in parallel. Show the Python code with WorkflowBuilder.",
+    "response": "Certainly! Below is an example of how you can implement a concurrent workflow pattern using the Agent Framework in Python with the `WorkflowBuilder`. In this example, we'll create a simple workflow where multiple agents execute their tasks in parallel.\n\nSuppose we have three agents that perform different tasks. We'll set up a concurrent workflow that allows these agents to run at the same time.\n\n### Example Code\n\n```python\nfrom agent_workflow import WorkflowBuilder, Agent\n\n# Define the agents with their respective tasks\nclass TaskAgent1(Agent):\n    def run(self):\n        print(\"Agent 1: Starting task...\")\n        # Simulate a task taking some time\n        import time\n        time.sleep(2)\n        print(\"Agent 1: Task completed.\")\n\nclass TaskAgent2(Agent):\n    def run(self):\n        print(\"Agent 2: Starting task...\")\n        time.sleep(3)\n        print(\"Agent 2: Task completed.\")\n\nclass TaskAgent3(Agent):\n    def run(self):\n        print(\"Agent 3: Starting task...\")\n        time.sleep(1)\n        print(\"Agent 3: Task completed.\")\n\n# Create a workflow using WorkflowBuilder\nwith WorkflowBuilder() as workflow:\n    agent1 = TaskAgent1()\n    agent2 = TaskAgent2()\n    agent3 = TaskAgent3()\n\n    # Add agents to the workflow to run concurrently\n    workflow.add(agent1)\n    workflow.add(agent2)\n    workflow.add(agent3)\n\n# Running the workflow\nif __name__ == \"__main__\":\n    workflow.run()\n```\n\n### Explanation\n\n1. **Define Agents**: We define three agents (`TaskAgent1`, `TaskAgent2`, `TaskAgent3`) that simulate processing tasks. Each agent's `run` method uses `time.sleep()` to simulate a delay for each task.\n\n2. **Create Workflow**: Using `WorkflowBuilder`, we create a workflow and add our agents to it.\n\n3. **Run the Workflow**: When the workflow is executed using `workflow.run()`, all agents are triggered to run concurrently, demonstrating the parallel execution.\n\n### Notes\n\n- Make sure that you have the necessary environment set up for the `agent_workflow` library. Adjust the import statements according to your actual framework structure.\n- Ensure that the framework you're using supports concurrent execution. The provided code assumes that the framework handles this aspect internally.",
+    "duration": 11.484457015991211,
+    "timestamp": "2025-10-06T22:58:26.939572",
+    "status": "success",
+    "has_code": true,
+    "response_length": 2212,
+    "full_result": {
+      "id": "resp_9fdfee645d97",
+      "created_at": 1759805906.938573,
+      "error": null,
+      "incomplete_details": null,
+      "instructions": null,
+      "metadata": null,
+      "model": "agent-framework",
+      "object": "response",
+      "output": [
+        {
+          "id": "msg_040ecc24",
+          "content": [
+            {
+              "annotations": [],
+              "text": "Certainly! Below is an example of how you can implement a concurrent workflow pattern using the Agent Framework in Python with the `WorkflowBuilder`. In this example, we'll create a simple workflow where multiple agents execute their tasks in parallel.\n\nSuppose we have three agents that perform different tasks. We'll set up a concurrent workflow that allows these agents to run at the same time.\n\n### Example Code\n\n```python\nfrom agent_workflow import WorkflowBuilder, Agent\n\n# Define the agents with their respective tasks\nclass TaskAgent1(Agent):\n    def run(self):\n        print(\"Agent 1: Starting task...\")\n        # Simulate a task taking some time\n        import time\n        time.sleep(2)\n        print(\"Agent 1: Task completed.\")\n\nclass TaskAgent2(Agent):\n    def run(self):\n        print(\"Agent 2: Starting task...\")\n        time.sleep(3)\n        print(\"Agent 2: Task completed.\")\n\nclass TaskAgent3(Agent):\n    def run(self):\n        print(\"Agent 3: Starting task...\")\n        time.sleep(1)\n        print(\"Agent 3: Task completed.\")\n\n# Create a workflow using WorkflowBuilder\nwith WorkflowBuilder() as workflow:\n    agent1 = TaskAgent1()\n    agent2 = TaskAgent2()\n    agent3 = TaskAgent3()\n\n    # Add agents to the workflow to run concurrently\n    workflow.add(agent1)\n    workflow.add(agent2)\n    workflow.add(agent3)\n\n# Running the workflow\nif __name__ == \"__main__\":\n    workflow.run()\n```\n\n### Explanation\n\n1. **Define Agents**: We define three agents (`TaskAgent1`, `TaskAgent2`, `TaskAgent3`) that simulate processing tasks. Each agent's `run` method uses `time.sleep()` to simulate a delay for each task.\n\n2. **Create Workflow**: Using `WorkflowBuilder`, we create a workflow and add our agents to it.\n\n3. **Run the Workflow**: When the workflow is executed using `workflow.run()`, all agents are triggered to run concurrently, demonstrating the parallel execution.\n\n### Notes\n\n- Make sure that you have the necessary environment set up for the `agent_workflow` library. Adjust the import statements according to your actual framework structure.\n- Ensure that the framework you're using supports concurrent execution. The provided code assumes that the framework handles this aspect internally.",
+              "type": "output_text",
+              "logprobs": null
+            }
+          ],
+          "role": "assistant",
+          "status": "completed",
+          "type": "message"
+        }
+      ],
+      "parallel_tool_calls": false,
+      "temperature": null,
+      "tool_choice": "none",
+      "tools": [],
+      "top_p": null,
+      "background": null,
+      "conversation": null,
+      "max_output_tokens": null,
+      "max_tool_calls": null,
+      "previous_response_id": null,
+      "prompt": null,
+      "prompt_cache_key": null,
+      "reasoning": null,
+      "safety_identifier": null,
+      "service_tier": null,
+      "status": null,
+      "text": null,
+      "top_logprobs": null,
+      "truncation": null,
+      "usage": {
+        "input_tokens": 36,
+        "input_tokens_details": {
+          "cached_tokens": 0
+        },
+        "output_tokens": 553,
+        "output_tokens_details": {
+          "reasoning_tokens": 0
+        },
+        "total_tokens": 589
+      },
+      "user": null
+    }
+  },
+  {
+    "test_id": 5,
+    "test_name": "Error Handling in Workflows",
+    "query": "How do I implement proper error handling and retry logic in Agent Framework workflows? Provide code examples with try-catch patterns.",
+    "response": "Implementing proper error handling and retry logic in Agent Framework workflows is crucial for ensuring that your workflows can handle unexpected errors gracefully. Below is a guide that outlines how to implement error handling and retry logic using try-catch patterns, along with code examples.\n\n### Basic Structure for Error Handling\n\nIn most programming environments, you can utilize `try-catch` blocks to handle exceptions. The structure would look something like this:\n\n```python\ntry:\n    # Code that may raise an exception\nexcept SomeExceptionType as e:\n    # Handle the exception\n```\n\n### Implementing Retry Logic\n\nTo implement retry logic, you can encapsulate the code in a loop that attempts to execute the action a set number of times before giving up. You can adjust the number of retries and potentially include exponential backoff or delays between retries. \n\nHere's a basic implementation in a pseudo-code format:\n\n```python\nMAX_RETRIES = 3\nRETRY_DELAY = 2  # Delay in seconds\n\ndef execute_with_retry(func, *args, **kwargs):\n    for attempt in range(MAX_RETRIES):\n        try:\n            result = func(*args, **kwargs)  # Call the function\n            return result\n        except SomeException as e:\n            print(f\"Attempt {attempt + 1} failed: {e}\")\n            if attempt < MAX_RETRIES - 1:\n                time.sleep(RETRY_DELAY)  # Wait before retrying\n    raise Exception(\"Max retries exceeded.\")\n```\n\n### Example of Error Handling and Retry Logic in Workflow\n\nHere's an example workflow function where we might need to handle errors when calling API functions.\n\n```python\nimport time\n\nMAX_RETRIES = 3\nRETRY_DELAY = 2  # Delay in seconds\n\ndef call_api(data):\n    # Simulated API call that may fail\n    if random.random() < 0.7:  # Simulating a failure in 70% of the cases\n        raise Exception(\"API call failed.\")\n    return \"Success: \" + data\n\ndef execute_workflow(data):\n    try:\n        result = execute_with_retry(call_api, data)\n        print(result)\n    except Exception as e:\n        print(f\"Workflow failed: {e}\")\n\ndef execute_with_retry(func, *args, **kwargs):\n    for attempt in range(MAX_RETRIES):\n        try:\n            return func(*args, **kwargs)\n        except Exception as e:\n            print(f\"Attempt {attempt + 1} failed: {e}\")\n            if attempt < MAX_RETRIES - 1:\n                time.sleep(RETRY_DELAY)\n    raise Exception(\"Max retries exceeded.\")\n\n# Executing the workflow\nexecute_workflow(\"Sample Data\")\n```\n\n### Key Points\n\n1. **Encapsulate Retry Logic**: The `execute_with_retry` function separates the retry logic from the main workflow logic, which enhances code readability.\n  \n2. **Retries with Delay**: You can add delays between retries to avoid overwhelming a service that is temporarily down.\n\n3. **Custom Exception Handling**: You can define specific exceptions to catch based on your requirements to manage different error scenarios differently.\n\n4. **Logging and Monitoring**: It’s also a good practice to log the error messages for monitoring and troubleshooting purposes.\n\n5. **Exponential Backoff**: For production systems, consider implementing an exponential backoff strategy to manage retries more effectively.\n\nBy following the pattern above, you can ensure that your Agent Framework workflows handle errors gracefully and can recover from issues without failing entirely.",
+    "duration": 13.086196660995483,
+    "timestamp": "2025-10-06T22:58:42.027805",
+    "status": "success",
+    "has_code": true,
+    "response_length": 3351,
+    "full_result": {
+      "id": "resp_97cba11be8d1",
+      "created_at": 1759805922.026139,
+      "error": null,
+      "incomplete_details": null,
+      "instructions": null,
+      "metadata": null,
+      "model": "agent-framework",
+      "object": "response",
+      "output": [
+        {
+          "id": "msg_6506b8b7",
+          "content": [
+            {
+              "annotations": [],
+              "text": "Implementing proper error handling and retry logic in Agent Framework workflows is crucial for ensuring that your workflows can handle unexpected errors gracefully. Below is a guide that outlines how to implement error handling and retry logic using try-catch patterns, along with code examples.\n\n### Basic Structure for Error Handling\n\nIn most programming environments, you can utilize `try-catch` blocks to handle exceptions. The structure would look something like this:\n\n```python\ntry:\n    # Code that may raise an exception\nexcept SomeExceptionType as e:\n    # Handle the exception\n```\n\n### Implementing Retry Logic\n\nTo implement retry logic, you can encapsulate the code in a loop that attempts to execute the action a set number of times before giving up. You can adjust the number of retries and potentially include exponential backoff or delays between retries. \n\nHere's a basic implementation in a pseudo-code format:\n\n```python\nMAX_RETRIES = 3\nRETRY_DELAY = 2  # Delay in seconds\n\ndef execute_with_retry(func, *args, **kwargs):\n    for attempt in range(MAX_RETRIES):\n        try:\n            result = func(*args, **kwargs)  # Call the function\n            return result\n        except SomeException as e:\n            print(f\"Attempt {attempt + 1} failed: {e}\")\n            if attempt < MAX_RETRIES - 1:\n                time.sleep(RETRY_DELAY)  # Wait before retrying\n    raise Exception(\"Max retries exceeded.\")\n```\n\n### Example of Error Handling and Retry Logic in Workflow\n\nHere's an example workflow function where we might need to handle errors when calling API functions.\n\n```python\nimport time\n\nMAX_RETRIES = 3\nRETRY_DELAY = 2  # Delay in seconds\n\ndef call_api(data):\n    # Simulated API call that may fail\n    if random.random() < 0.7:  # Simulating a failure in 70% of the cases\n        raise Exception(\"API call failed.\")\n    return \"Success: \" + data\n\ndef execute_workflow(data):\n    try:\n        result = execute_with_retry(call_api, data)\n        print(result)\n    except Exception as e:\n        print(f\"Workflow failed: {e}\")\n\ndef execute_with_retry(func, *args, **kwargs):\n    for attempt in range(MAX_RETRIES):\n        try:\n            return func(*args, **kwargs)\n        except Exception as e:\n            print(f\"Attempt {attempt + 1} failed: {e}\")\n            if attempt < MAX_RETRIES - 1:\n                time.sleep(RETRY_DELAY)\n    raise Exception(\"Max retries exceeded.\")\n\n# Executing the workflow\nexecute_workflow(\"Sample Data\")\n```\n\n### Key Points\n\n1. **Encapsulate Retry Logic**: The `execute_with_retry` function separates the retry logic from the main workflow logic, which enhances code readability.\n  \n2. **Retries with Delay**: You can add delays between retries to avoid overwhelming a service that is temporarily down.\n\n3. **Custom Exception Handling**: You can define specific exceptions to catch based on your requirements to manage different error scenarios differently.\n\n4. **Logging and Monitoring**: It’s also a good practice to log the error messages for monitoring and troubleshooting purposes.\n\n5. **Exponential Backoff**: For production systems, consider implementing an exponential backoff strategy to manage retries more effectively.\n\nBy following the pattern above, you can ensure that your Agent Framework workflows handle errors gracefully and can recover from issues without failing entirely.",
+              "type": "output_text",
+              "logprobs": null
+            }
+          ],
+          "role": "assistant",
+          "status": "completed",
+          "type": "message"
+        }
+      ],
+      "parallel_tool_calls": false,
+      "temperature": null,
+      "tool_choice": "none",
+      "tools": [],
+      "top_p": null,
+      "background": null,
+      "conversation": null,
+      "max_output_tokens": null,
+      "max_tool_calls": null,
+      "previous_response_id": null,
+      "prompt": null,
+      "prompt_cache_key": null,
+      "reasoning": null,
+      "safety_identifier": null,
+      "service_tier": null,
+      "status": null,
+      "text": null,
+      "top_logprobs": null,
+      "truncation": null,
+      "usage": {
+        "input_tokens": 33,
+        "input_tokens_details": {
+          "cached_tokens": 0
+        },
+        "output_tokens": 837,
+        "output_tokens_details": {
+          "reasoning_tokens": 0
+        },
+        "total_tokens": 870
+      },
+      "user": null
+    }
+  },
+  {
+    "test_id": 6,
+    "test_name": "Agent Context and Memory",
+    "query": "Explain and show code for how to maintain conversation context and memory across multiple turns in Agent Framework ChatAgent.",
+    "response": "To maintain conversation context and memory across multiple turns in an Agent Framework ChatAgent, you typically utilize a memory structure to store important information from previous interactions. This allows the agent to recall facts and context from previous messages, resulting in a more cohesive and responsive dialogue.\n\nHere’s an outline of how you can implement this, followed by an example code snippet:\n\n### Steps to Maintain Conversation Context:\n\n1. **Define a Memory Structure**: Create a data structure to store relevant conversation history or specific facts.\n2. **Update Memory on Each Turn**: After processing a user input, update the memory with new relevant information.\n3. **Retrieve Memory for Future Turns**: Use the memory to inform responses in future interactions.\n4. **Contextual Responses**: Generate responses that utilize stored memory to keep the conversation contextually relevant.\n\n### Example Code\n\nHere's an illustrative example using Python, assuming you’re using a hypothetical `ChatAgent` class that you would implement based on the general principles mentioned above:\n\n```python\nclass ChatAgent:\n    def __init__(self):\n        # Initialize memory as a dictionary or list\n        self.memory = {}\n        self.conversation_history = []\n\n    def add_to_memory(self, key, value):\n        \"\"\"Store information in memory.\"\"\"\n        self.memory[key] = value\n\n    def get_from_memory(self, key):\n        \"\"\"Retrieve information from memory.\"\"\"\n        return self.memory.get(key, None)\n\n    def handle_input(self, user_input):\n        \"\"\"Process user input and maintain context.\"\"\"\n        # Store conversation history\n        self.conversation_history.append(user_input)\n\n        # Example processing (could involve NLP/machine learning)\n        response = self.process_input(user_input)\n\n        # Update memory if relevant information is found\n        if \"name\" in user_input.lower():\n            name = user_input.split()[-1]  # Example: Extracting a name\n            self.add_to_memory('user_name', name)\n\n        if \"favorite color\" in user_input.lower():\n            color = user_input.split()[-1]  # Example: Extracting a color\n            self.add_to_memory('favorite_color', color)\n\n        # Generate contextual response\n        response = self.generate_response(response)\n        return response\n\n    def generate_response(self, response):\n        \"\"\"Generate a contextual response based on memory.\"\"\"\n        user_name = self.get_from_memory('user_name')\n        favorite_color = self.get_from_memory('favorite_color')\n\n        if user_name:\n            response = f\"{response} By the way, nice to meet you, {user_name}!\"\n        if favorite_color:\n            response = f\"{response} I remember you like {favorite_color}!\"\n\n        return response\n\n    def process_input(self, user_input):\n        \"\"\"Mock method to simulate response generation.\"\"\"\n        return \"That's interesting!\"\n\n# Example of using the ChatAgent\nagent = ChatAgent()\nprint(agent.handle_input(\"Hello, my name is Alice.\"))  # Initial input\nprint(agent.handle_input(\"My favorite color is blue.\"))  # Update memory\nprint(agent.handle_input(\"What do you think?\"))  # Use memory context in response\n```\n\n### Explanation of the Code:\n\n1. **Memory Structure**: The `memory` dictionary is used to store pieces of information mapped to specific keys (e.g., user name, favorite color).\n2. **Input Handling**: The `handle_input` method processes each input, updates the memory if certain keywords are detected, and then calls to generate a contextual response.\n3. **Response Generation**: The `generate_response` method checks the memory for relevant information and enriches the agent's response accordingly.\n4. **Conversation History**: The agent keeps a `conversation_history` list, which can be expanded for more complex use cases, such as summarizing previous interactions.\n\nThis example outlines a basic structure; you can expand it further depending on your specific needs and complexities of conversation handling in your application.",
+    "duration": 18.187409162521362,
+    "timestamp": "2025-10-06T22:59:02.216896",
+    "status": "success",
+    "has_code": true,
+    "response_length": 4051,
+    "full_result": {
+      "id": "resp_c8bbfdce3538",
+      "created_at": 1759805942.215511,
+      "error": null,
+      "incomplete_details": null,
+      "instructions": null,
+      "metadata": null,
+      "model": "agent-framework",
+      "object": "response",
+      "output": [
+        {
+          "id": "msg_eed8bda0",
+          "content": [
+            {
+              "annotations": [],
+              "text": "To maintain conversation context and memory across multiple turns in an Agent Framework ChatAgent, you typically utilize a memory structure to store important information from previous interactions. This allows the agent to recall facts and context from previous messages, resulting in a more cohesive and responsive dialogue.\n\nHere’s an outline of how you can implement this, followed by an example code snippet:\n\n### Steps to Maintain Conversation Context:\n\n1. **Define a Memory Structure**: Create a data structure to store relevant conversation history or specific facts.\n2. **Update Memory on Each Turn**: After processing a user input, update the memory with new relevant information.\n3. **Retrieve Memory for Future Turns**: Use the memory to inform responses in future interactions.\n4. **Contextual Responses**: Generate responses that utilize stored memory to keep the conversation contextually relevant.\n\n### Example Code\n\nHere's an illustrative example using Python, assuming you’re using a hypothetical `ChatAgent` class that you would implement based on the general principles mentioned above:\n\n```python\nclass ChatAgent:\n    def __init__(self):\n        # Initialize memory as a dictionary or list\n        self.memory = {}\n        self.conversation_history = []\n\n    def add_to_memory(self, key, value):\n        \"\"\"Store information in memory.\"\"\"\n        self.memory[key] = value\n\n    def get_from_memory(self, key):\n        \"\"\"Retrieve information from memory.\"\"\"\n        return self.memory.get(key, None)\n\n    def handle_input(self, user_input):\n        \"\"\"Process user input and maintain context.\"\"\"\n        # Store conversation history\n        self.conversation_history.append(user_input)\n\n        # Example processing (could involve NLP/machine learning)\n        response = self.process_input(user_input)\n\n        # Update memory if relevant information is found\n        if \"name\" in user_input.lower():\n            name = user_input.split()[-1]  # Example: Extracting a name\n            self.add_to_memory('user_name', name)\n\n        if \"favorite color\" in user_input.lower():\n            color = user_input.split()[-1]  # Example: Extracting a color\n            self.add_to_memory('favorite_color', color)\n\n        # Generate contextual response\n        response = self.generate_response(response)\n        return response\n\n    def generate_response(self, response):\n        \"\"\"Generate a contextual response based on memory.\"\"\"\n        user_name = self.get_from_memory('user_name')\n        favorite_color = self.get_from_memory('favorite_color')\n\n        if user_name:\n            response = f\"{response} By the way, nice to meet you, {user_name}!\"\n        if favorite_color:\n            response = f\"{response} I remember you like {favorite_color}!\"\n\n        return response\n\n    def process_input(self, user_input):\n        \"\"\"Mock method to simulate response generation.\"\"\"\n        return \"That's interesting!\"\n\n# Example of using the ChatAgent\nagent = ChatAgent()\nprint(agent.handle_input(\"Hello, my name is Alice.\"))  # Initial input\nprint(agent.handle_input(\"My favorite color is blue.\"))  # Update memory\nprint(agent.handle_input(\"What do you think?\"))  # Use memory context in response\n```\n\n### Explanation of the Code:\n\n1. **Memory Structure**: The `memory` dictionary is used to store pieces of information mapped to specific keys (e.g., user name, favorite color).\n2. **Input Handling**: The `handle_input` method processes each input, updates the memory if certain keywords are detected, and then calls to generate a contextual response.\n3. **Response Generation**: The `generate_response` method checks the memory for relevant information and enriches the agent's response accordingly.\n4. **Conversation History**: The agent keeps a `conversation_history` list, which can be expanded for more complex use cases, such as summarizing previous interactions.\n\nThis example outlines a basic structure; you can expand it further depending on your specific needs and complexities of conversation handling in your application.",
+              "type": "output_text",
+              "logprobs": null
+            }
+          ],
+          "role": "assistant",
+          "status": "completed",
+          "type": "message"
+        }
+      ],
+      "parallel_tool_calls": false,
+      "temperature": null,
+      "tool_choice": "none",
+      "tools": [],
+      "top_p": null,
+      "background": null,
+      "conversation": null,
+      "max_output_tokens": null,
+      "max_tool_calls": null,
+      "previous_response_id": null,
+      "prompt": null,
+      "prompt_cache_key": null,
+      "reasoning": null,
+      "safety_identifier": null,
+      "service_tier": null,
+      "status": null,
+      "text": null,
+      "top_logprobs": null,
+      "truncation": null,
+      "usage": {
+        "input_tokens": 31,
+        "input_tokens_details": {
+          "cached_tokens": 0
+        },
+        "output_tokens": 1012,
+        "output_tokens_details": {
+          "reasoning_tokens": 0
+        },
+        "total_tokens": 1043
+      },
+      "user": null
+    }
+  },
+  {
+    "test_id": 7,
+    "test_name": "Streaming Responses",
+    "query": "How do I implement streaming responses in Agent Framework? Show code for both creating an agent that streams and consuming the stream.",
+    "response": "To implement streaming responses in the Agent Framework, you will need to set up an agent that can send responses incrementally and then create a consumer that receives and processes those stream responses.\n\nHere’s a simplified example of how you could implement a streaming agent and a consumer in a hypothetical programming language (let's say Python for example purposes). This assumes you're using some form of an asynchronous framework capable of handling streams, like asyncio.\n\n### Creating a Streaming Agent\n\n```python\nimport asyncio\nfrom agent_framework import Agent\n\nclass StreamingAgent(Agent):\n    \n    async def stream_response(self, request):\n        # Simulating streaming data\n        yield \"Starting response...\\n\"\n        await asyncio.sleep(1)  # Simulate wait time for data generation\n        yield \"Here is some data...\\n\"\n        await asyncio.sleep(1)\n        yield \"And more data...\\n\"\n        await asyncio.sleep(1)\n        yield \"Ending response.\\n\"\n\n    async def handle_request(self, request):\n        response_stream = self.stream_response(request)\n        async for chunk in response_stream:\n            yield chunk\n\n\n# Instantiate and run the agent\nstreaming_agent = StreamingAgent()\n```\n\n### Consuming the Stream\n\nYou would then consume the stream from the agent like this:\n\n```python\nimport asyncio\n\nasync def consume_stream(agent):\n    request = {}  # This would be your actual request data\n    async for chunk in agent.handle_request(request):\n        print(chunk)  # Process each chunk as it is received\n\n# Run the consumer\nasyncio.run(consume_stream(streaming_agent))\n```\n\n### Explanation of Code\n\n1. **StreamingAgent**: This creates a subclass of `Agent` where the method `stream_response` simulates generating a stream of data. The `handle_request` method serves as the entry point to handle incoming requests and sends the stream of data back to the consumer.\n\n2. **Async Functions with Yield**: By using `yield`, we allow the data to be sent in chunks. Each `await asyncio.sleep` simulates a delay in data availability, which could mimic a more complex data processing scenario.\n\n3. **Consuming the Stream**: In the `consume_stream` function, we call `handle_request` on the agent instance to get the streamed response, iterating over it asynchronously. Each chunk of data is printed as it's received.\n\nThis is a simplified example, and you'll need to adapt it according to the specific features and libraries used in your actual environment, like error handling and possibly more complex logic depending on how the agent interacts with external systems.",
+    "duration": 12.21815276145935,
+    "timestamp": "2025-10-06T22:59:16.437673",
+    "status": "success",
+    "has_code": true,
+    "response_length": 2595,
+    "full_result": {
+      "id": "resp_1b63f907cfb6",
+      "created_at": 1759805956.43587,
+      "error": null,
+      "incomplete_details": null,
+      "instructions": null,
+      "metadata": null,
+      "model": "agent-framework",
+      "object": "response",
+      "output": [
+        {
+          "id": "msg_9c1e686c",
+          "content": [
+            {
+              "annotations": [],
+              "text": "To implement streaming responses in the Agent Framework, you will need to set up an agent that can send responses incrementally and then create a consumer that receives and processes those stream responses.\n\nHere’s a simplified example of how you could implement a streaming agent and a consumer in a hypothetical programming language (let's say Python for example purposes). This assumes you're using some form of an asynchronous framework capable of handling streams, like asyncio.\n\n### Creating a Streaming Agent\n\n```python\nimport asyncio\nfrom agent_framework import Agent\n\nclass StreamingAgent(Agent):\n    \n    async def stream_response(self, request):\n        # Simulating streaming data\n        yield \"Starting response...\\n\"\n        await asyncio.sleep(1)  # Simulate wait time for data generation\n        yield \"Here is some data...\\n\"\n        await asyncio.sleep(1)\n        yield \"And more data...\\n\"\n        await asyncio.sleep(1)\n        yield \"Ending response.\\n\"\n\n    async def handle_request(self, request):\n        response_stream = self.stream_response(request)\n        async for chunk in response_stream:\n            yield chunk\n\n\n# Instantiate and run the agent\nstreaming_agent = StreamingAgent()\n```\n\n### Consuming the Stream\n\nYou would then consume the stream from the agent like this:\n\n```python\nimport asyncio\n\nasync def consume_stream(agent):\n    request = {}  # This would be your actual request data\n    async for chunk in agent.handle_request(request):\n        print(chunk)  # Process each chunk as it is received\n\n# Run the consumer\nasyncio.run(consume_stream(streaming_agent))\n```\n\n### Explanation of Code\n\n1. **StreamingAgent**: This creates a subclass of `Agent` where the method `stream_response` simulates generating a stream of data. The `handle_request` method serves as the entry point to handle incoming requests and sends the stream of data back to the consumer.\n\n2. **Async Functions with Yield**: By using `yield`, we allow the data to be sent in chunks. Each `await asyncio.sleep` simulates a delay in data availability, which could mimic a more complex data processing scenario.\n\n3. **Consuming the Stream**: In the `consume_stream` function, we call `handle_request` on the agent instance to get the streamed response, iterating over it asynchronously. Each chunk of data is printed as it's received.\n\nThis is a simplified example, and you'll need to adapt it according to the specific features and libraries used in your actual environment, like error handling and possibly more complex logic depending on how the agent interacts with external systems.",
+              "type": "output_text",
+              "logprobs": null
+            }
+          ],
+          "role": "assistant",
+          "status": "completed",
+          "type": "message"
+        }
+      ],
+      "parallel_tool_calls": false,
+      "temperature": null,
+      "tool_choice": "none",
+      "tools": [],
+      "top_p": null,
+      "background": null,
+      "conversation": null,
+      "max_output_tokens": null,
+      "max_tool_calls": null,
+      "previous_response_id": null,
+      "prompt": null,
+      "prompt_cache_key": null,
+      "reasoning": null,
+      "safety_identifier": null,
+      "service_tier": null,
+      "status": null,
+      "text": null,
+      "top_logprobs": null,
+      "truncation": null,
+      "usage": {
+        "input_tokens": 33,
+        "input_tokens_details": {
+          "cached_tokens": 0
+        },
+        "output_tokens": 648,
+        "output_tokens_details": {
+          "reasoning_tokens": 0
+        },
+        "total_tokens": 681
+      },
+      "user": null
+    }
+  },
+  {
+    "test_id": 8,
+    "test_name": "Multi-Agent Coordination",
+    "query": "Design a multi-agent system in Agent Framework where agents need to coordinate and pass data between each other. Show the workflow implementation.",
+    "response": "Designing a multi-agent system (MAS) in Agent Framework involves defining agents, their roles, interactions, and how they coordinate to exchange data effectively. Below is an example workflow implementation illustrating a simple multi-agent system where agents can collaborate to process a task by sharing data.\n\n### Scenario: Order Processing System\n\nIn this scenario, we will implement a multi-agent system to handle order processing. There will be three agents:\n\n1. **Order Agent**: Receives and processes orders.\n2. **Inventory Agent**: Manages stock levels and inventory checks.\n3. **Payment Agent**: Handles payment processing.\n\n### Workflow Implementation\n\nHere’s the overview of the workflow:\n\n1. **Order Agent** receives an order from a user.\n2. The **Order Agent** checks the inventory by sending a request to the **Inventory Agent**.\n3. The **Inventory Agent** checks its stock and provides feedback to the **Order Agent** (whether items are in stock or not).\n4. If items are in stock, the **Order Agent** requests payment processing from the **Payment Agent**.\n5. The **Payment Agent** processes the payment and informs the **Order Agent** of the success or failure of the payment.\n6. The **Order Agent** sends a confirmation or failure message back to the user.\n\n### Detailed Workflow Steps\n\n```plaintext\n1. User places an order → Order Agent initiates with User.\n2. Order Agent checks inventory:\n    - Send => {request: \"check_inventory\", order_details: orderDetails } → Inventory Agent.\n3. Inventory Agent responds:\n    - If in stock: Send => {status: \"inventory_check\", available: true } → Order Agent.\n    - If out of stock: Send => {status: \"inventory_check\", available: false } → Order Agent.\n4. If stock is available:\n    - Order Agent requests payment:\n        - Send => {request: \"process_payment\", order_details: orderDetails } → Payment Agent.\n5. Payment Agent processes payment:\n    - Send => {status: \"payment_status\", success: true or false } → Order Agent.\n6. Based on payment status:\n    - If success → Send confirmation to User => {message: \"Order Confirmed\"}.\n    - If failure → Send failure notification to User => {message: \"Payment Failed\"}.\n```\n\n### Example Agent Implementations\n\nBelow are some pseudocode implementations for agents.\n\n#### Order Agent\n\n```python\nclass OrderAgent:\n    def receive_order(self, order_details):\n        self.order_details = order_details\n        inventory_check(self.order_details)\n\n    def inventory_check(self, order_details):\n        send_message(InventoryAgent, {\"request\": \"check_inventory\", \"order_details\": order_details})\n\n    def receive_inventory_response(self, response):\n        if response[\"available\"]:\n            self.process_payment(self.order_details)\n        else:\n            send_message(UserAgent, {\"message\": \"Item out of stock\"})\n\n    def process_payment(self, order_details):\n        send_message(PaymentAgent, {\"request\": \"process_payment\", \"order_details\": order_details})\n\n    def receive_payment_response(self, response):\n        if response[\"success\"]:\n            send_message(UserAgent, {\"message\": \"Order Confirmed\"})\n        else:\n            send_message(UserAgent, {\"message\": \"Payment Failed\"})\n```\n\n#### Inventory Agent\n\n```python\nclass InventoryAgent:\n    def check_inventory(self, order_details):\n        available = self.check_stock(order_details)\n        send_message(OrderAgent, {\"status\": \"inventory_check\", \"available\": available})\n\n    def check_stock(self, order_details):\n        # Check stock logic\n        return is_in_stock(order_details)  # Returns True or False\n```\n\n#### Payment Agent\n\n```python\nclass PaymentAgent:\n    def process_payment(self, order_details):\n        success = self.process(order_details)\n        send_message(OrderAgent, {\"status\": \"payment_status\", \"success\": success})\n\n    def process(self, order_details):\n        # Payment processing logic\n        return payment_successfully_processed(order_details)  # Returns True or False\n```\n\n### Communication Method\n\nThe communication between agents can be done through a message-passing mechanism, which can be simple function calls for synchronous communication, or publish-subscribe pattern for asynchronous communication, depending on the underlying agent architecture.\n\n### Conclusion\n\nThis example illustrates a basic multi-agent system using an order processing scenario. Each agent has its responsibilities, and they communicate with each other to complete the workflow. You can further enhance this by implementing error handling, logging, and more sophisticated communication protocols as required.",
+    "duration": 24.701675415039062,
+    "timestamp": "2025-10-06T22:59:43.142300",
+    "status": "success",
+    "has_code": true,
+    "response_length": 4593,
+    "full_result": {
+      "id": "resp_fa708fccd8b3",
+      "created_at": 1759805983.139785,
+      "error": null,
+      "incomplete_details": null,
+      "instructions": null,
+      "metadata": null,
+      "model": "agent-framework",
+      "object": "response",
+      "output": [
+        {
+          "id": "msg_dddc5c17",
+          "content": [
+            {
+              "annotations": [],
+              "text": "Designing a multi-agent system (MAS) in Agent Framework involves defining agents, their roles, interactions, and how they coordinate to exchange data effectively. Below is an example workflow implementation illustrating a simple multi-agent system where agents can collaborate to process a task by sharing data.\n\n### Scenario: Order Processing System\n\nIn this scenario, we will implement a multi-agent system to handle order processing. There will be three agents:\n\n1. **Order Agent**: Receives and processes orders.\n2. **Inventory Agent**: Manages stock levels and inventory checks.\n3. **Payment Agent**: Handles payment processing.\n\n### Workflow Implementation\n\nHere’s the overview of the workflow:\n\n1. **Order Agent** receives an order from a user.\n2. The **Order Agent** checks the inventory by sending a request to the **Inventory Agent**.\n3. The **Inventory Agent** checks its stock and provides feedback to the **Order Agent** (whether items are in stock or not).\n4. If items are in stock, the **Order Agent** requests payment processing from the **Payment Agent**.\n5. The **Payment Agent** processes the payment and informs the **Order Agent** of the success or failure of the payment.\n6. The **Order Agent** sends a confirmation or failure message back to the user.\n\n### Detailed Workflow Steps\n\n```plaintext\n1. User places an order → Order Agent initiates with User.\n2. Order Agent checks inventory:\n    - Send => {request: \"check_inventory\", order_details: orderDetails } → Inventory Agent.\n3. Inventory Agent responds:\n    - If in stock: Send => {status: \"inventory_check\", available: true } → Order Agent.\n    - If out of stock: Send => {status: \"inventory_check\", available: false } → Order Agent.\n4. If stock is available:\n    - Order Agent requests payment:\n        - Send => {request: \"process_payment\", order_details: orderDetails } → Payment Agent.\n5. Payment Agent processes payment:\n    - Send => {status: \"payment_status\", success: true or false } → Order Agent.\n6. Based on payment status:\n    - If success → Send confirmation to User => {message: \"Order Confirmed\"}.\n    - If failure → Send failure notification to User => {message: \"Payment Failed\"}.\n```\n\n### Example Agent Implementations\n\nBelow are some pseudocode implementations for agents.\n\n#### Order Agent\n\n```python\nclass OrderAgent:\n    def receive_order(self, order_details):\n        self.order_details = order_details\n        inventory_check(self.order_details)\n\n    def inventory_check(self, order_details):\n        send_message(InventoryAgent, {\"request\": \"check_inventory\", \"order_details\": order_details})\n\n    def receive_inventory_response(self, response):\n        if response[\"available\"]:\n            self.process_payment(self.order_details)\n        else:\n            send_message(UserAgent, {\"message\": \"Item out of stock\"})\n\n    def process_payment(self, order_details):\n        send_message(PaymentAgent, {\"request\": \"process_payment\", \"order_details\": order_details})\n\n    def receive_payment_response(self, response):\n        if response[\"success\"]:\n            send_message(UserAgent, {\"message\": \"Order Confirmed\"})\n        else:\n            send_message(UserAgent, {\"message\": \"Payment Failed\"})\n```\n\n#### Inventory Agent\n\n```python\nclass InventoryAgent:\n    def check_inventory(self, order_details):\n        available = self.check_stock(order_details)\n        send_message(OrderAgent, {\"status\": \"inventory_check\", \"available\": available})\n\n    def check_stock(self, order_details):\n        # Check stock logic\n        return is_in_stock(order_details)  # Returns True or False\n```\n\n#### Payment Agent\n\n```python\nclass PaymentAgent:\n    def process_payment(self, order_details):\n        success = self.process(order_details)\n        send_message(OrderAgent, {\"status\": \"payment_status\", \"success\": success})\n\n    def process(self, order_details):\n        # Payment processing logic\n        return payment_successfully_processed(order_details)  # Returns True or False\n```\n\n### Communication Method\n\nThe communication between agents can be done through a message-passing mechanism, which can be simple function calls for synchronous communication, or publish-subscribe pattern for asynchronous communication, depending on the underlying agent architecture.\n\n### Conclusion\n\nThis example illustrates a basic multi-agent system using an order processing scenario. Each agent has its responsibilities, and they communicate with each other to complete the workflow. You can further enhance this by implementing error handling, logging, and more sophisticated communication protocols as required.",
+              "type": "output_text",
+              "logprobs": null
+            }
+          ],
+          "role": "assistant",
+          "status": "completed",
+          "type": "message"
+        }
+      ],
+      "parallel_tool_calls": false,
+      "temperature": null,
+      "tool_choice": "none",
+      "tools": [],
+      "top_p": null,
+      "background": null,
+      "conversation": null,
+      "max_output_tokens": null,
+      "max_tool_calls": null,
+      "previous_response_id": null,
+      "prompt": null,
+      "prompt_cache_key": null,
+      "reasoning": null,
+      "safety_identifier": null,
+      "service_tier": null,
+      "status": null,
+      "text": null,
+      "top_logprobs": null,
+      "truncation": null,
+      "usage": {
+        "input_tokens": 36,
+        "input_tokens_details": {
+          "cached_tokens": 0
+        },
+        "output_tokens": 1148,
+        "output_tokens_details": {
+          "reasoning_tokens": 0
+        },
+        "total_tokens": 1184
+      },
+      "user": null
+    }
+  }
+]

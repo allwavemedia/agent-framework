@@ -5,7 +5,7 @@ from typing import List, Optional, Dict, Any
 from datetime import datetime
 from sqlmodel import Session, select
 
-from app.models import Agent, AgentCreate, AgentUpdate, AgentResponse
+from app.models import Agent, AgentCreate, AgentUpdate
 from app.agents.agent_factory import AgentFactory
 from app.core.logging import get_logger
 
@@ -18,15 +18,16 @@ class AgentService:
     def __init__(self, db: Session):
         self.db = db
     
-    async def list_agents(self, skip: int = 0, limit: int = 100) -> List[AgentResponse]:
+    async def list_agents(self, skip: int = 0, limit: int = 100) -> List[Agent]:
         """List all agents."""
         statement = select(Agent).offset(skip).limit(limit)
         result = self.db.exec(statement)
         agents = result.all()
         
-        return [AgentResponse.from_orm(agent) for agent in agents]
+        # FastAPI response_model will handle conversion automatically
+        return list(agents)
     
-    async def create_agent(self, agent_data: AgentCreate) -> AgentResponse:
+    async def create_agent(self, agent_data: AgentCreate) -> Agent:
         """Create a new agent."""
         # Create database record
         agent = Agent(**agent_data.dict())
@@ -38,26 +39,25 @@ class AgentService:
         
         logger.info(f"Created agent: {agent.name} (ID: {agent.id})")
         
-        return AgentResponse.from_orm(agent)
+        return agent
     
-    async def get_agent(self, agent_id: int) -> Optional[AgentResponse]:
+    async def get_agent(self, agent_id: int) -> Optional[Agent]:
         """Get an agent by ID."""
         agent = self.db.get(Agent, agent_id)
         if not agent:
             return None
         
-        return AgentResponse.from_orm(agent)
+        return agent
     
-    async def update_agent(self, agent_id: int, agent_data: AgentUpdate) -> Optional[AgentResponse]:
+    async def update_agent(self, agent_id: int, agent_data: AgentUpdate) -> Optional[Agent]:
         """Update an agent."""
         agent = self.db.get(Agent, agent_id)
         if not agent:
             return None
         
-        # Update fields
         update_data = agent_data.dict(exclude_unset=True)
-        for field, value in update_data.items():
-            setattr(agent, field, value)
+        for key, value in update_data.items():
+            setattr(agent, key, value)
         
         agent.updated_at = datetime.utcnow()
         
@@ -67,7 +67,7 @@ class AgentService:
         
         logger.info(f"Updated agent: {agent.name} (ID: {agent.id})")
         
-        return AgentResponse.from_orm(agent)
+        return agent
     
     async def delete_agent(self, agent_id: int) -> bool:
         """Delete an agent."""

@@ -6,7 +6,7 @@ from typing import Optional, List, Dict, Any
 from enum import Enum
 
 from sqlmodel import SQLModel, Field, Relationship, Column, JSON
-from pydantic import BaseModel
+from pydantic import BaseModel, ConfigDict
 
 
 class WorkflowStatus(str, Enum):
