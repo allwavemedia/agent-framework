@@ -2,7 +2,7 @@
 
 import json
 import sys
-from collections.abc import AsyncIterable, Mapping, MutableMapping, MutableSequence, Sequence
+from collections.abc import AsyncIterable, Awaitable, Callable, Mapping, MutableMapping, MutableSequence, Sequence
 from datetime import datetime
 from itertools import chain
 from typing import Any, TypeVar
@@ -28,6 +28,8 @@ from .._types import (
     Contents,
     DataContent,
     FinishReason,
+    FunctionApprovalRequestContent,
+    FunctionApprovalResponseContent,
     FunctionCallContent,
     FunctionResultContent,
     Role,
@@ -154,10 +156,13 @@ class OpenAIBaseChatClient(OpenAIBase, BaseChatClient):
 
     def _prepare_options(self, messages: MutableSequence[ChatMessage], chat_options: ChatOptions) -> dict[str, Any]:
         # Preprocess web search tool if it exists
-        options_dict = chat_options.to_provider_settings()
-        instructions = options_dict.pop("instructions", None)
-        if instructions:
-            messages = [ChatMessage(role="system", text=instructions), *messages]
+        options_dict = chat_options.to_dict(
+            exclude={
+                "type",
+                "instructions",  # included as system message
+            }
+        )
+
         if messages and "messages" not in options_dict:
             options_dict["messages"] = self._prepare_chat_history_for_request(messages)
         if "messages" not in options_dict:
@@ -172,14 +177,20 @@ class OpenAIBaseChatClient(OpenAIBase, BaseChatClient):
             options_dict.pop("parallel_tool_calls", None)
             options_dict.pop("tool_choice", None)
 
-        if "model" not in options_dict:
+        if "model_id" not in options_dict:
             options_dict["model"] = self.model_id
+        else:
+            options_dict["model"] = options_dict.pop("model_id")
         if (
             chat_options.response_format
             and isinstance(chat_options.response_format, type)
             and issubclass(chat_options.response_format, BaseModel)
         ):
             options_dict["response_format"] = type_to_response_format_param(chat_options.response_format)
+        if additional_properties := options_dict.pop("additional_properties", None):
+            for key, value in additional_properties.items():
+                if value is not None:
+                    options_dict[key] = value
         return options_dict
 
     def _create_chat_response(self, response: ChatCompletion, chat_options: ChatOptions) -> "ChatResponse":
@@ -347,6 +358,10 @@ class OpenAIBaseChatClient(OpenAIBase, BaseChatClient):
         """Parse a chat message into the openai format."""
         all_messages: list[dict[str, Any]] = []
         for content in message.contents:
+            # Skip approval content - it's internal framework state, not for the LLM
+            if isinstance(content, (FunctionApprovalRequestContent, FunctionApprovalResponseContent)):
+                continue
+
             args: dict[str, Any] = {
                 "role": message.role.value if isinstance(message.role, Role) else message.role,
             }
@@ -419,27 +434,24 @@ class OpenAIBaseChatClient(OpenAIBase, BaseChatClient):
                         "format": audio_format,
                     },
                 }
-            case DataContent() | UriContent() if content.media_type and content.media_type.startswith("application/"):
-                if content.media_type == "application/pdf":
-                    if content.uri.startswith("data:"):
-                        filename = (
-                            getattr(content, "filename", None)
-                            or content.additional_properties.get("filename", "document.pdf")
-                            if hasattr(content, "additional_properties") and content.additional_properties
-                            else "document.pdf"
-                        )
-                        return {
-                            "type": "file",
-                            "file": {
-                                "file_data": content.uri,  # Send full data URI
-                                "filename": filename,
-                            },
-                        }
-
-                    return content.to_dict(exclude_none=True)
-
-                return content.to_dict(exclude_none=True)
+            case DataContent() | UriContent() if content.has_top_level_media_type(
+                "application"
+            ) and content.uri.startswith("data:"):
+                # All application/* media types should be treated as files for OpenAI
+                filename = getattr(content, "filename", None) or (
+                    content.additional_properties.get("filename")
+                    if hasattr(content, "additional_properties") and content.additional_properties
+                    else None
+                )
+                file_obj = {"file_data": content.uri}
+                if filename:
+                    file_obj["filename"] = filename
+                return {
+                    "type": "file",
+                    "file": file_obj,
+                }
             case _:
+                # Default fallback for all other content types
                 return content.to_dict(exclude_none=True)
 
     @override
@@ -467,7 +479,7 @@ class OpenAIChatClient(OpenAIConfigMixin, OpenAIBaseChatClient):
         self,
         *,
         model_id: str | None = None,
-        api_key: str | None = None,
+        api_key: str | Callable[[], str | Awaitable[str]] | None = None,
         org_id: str | None = None,
         default_headers: Mapping[str, str] | None = None,
         async_client: AsyncOpenAI | None = None,
@@ -537,7 +549,7 @@ class OpenAIChatClient(OpenAIConfigMixin, OpenAIBaseChatClient):
 
         super().__init__(
             model_id=openai_settings.chat_model_id,
-            api_key=openai_settings.api_key.get_secret_value() if openai_settings.api_key else None,
+            api_key=self._get_api_key(openai_settings.api_key),
             base_url=openai_settings.base_url if openai_settings.base_url else None,
             org_id=openai_settings.org_id,
             default_headers=default_headers,
